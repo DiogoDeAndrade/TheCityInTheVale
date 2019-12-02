@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(CharacterController))]
 public class FPSController : MonoBehaviour
 {
     public Transform    xRotationTarget;
@@ -14,6 +15,7 @@ public class FPSController : MonoBehaviour
     public bool         mouseLookEnable = true;
     public float        mouseSensitivity = 100.0f;
     [Header("Movement")]
+    public bool         moveEnable = true;
     public float        moveSpeed = 4.0f;
     public float        jumpSpeed = 20.0f;
 
@@ -44,26 +46,32 @@ public class FPSController : MonoBehaviour
 
     void Update()
     {
-        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
-        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
+        if (mouseLookEnable)
+        {
+            float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
+            float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
 
-        currentRotation.y += mouseX;
-        currentRotation.x = Mathf.Clamp(currentRotation.x - mouseY, -70.0f, 70.0f);
+            currentRotation.y += mouseX;
+            currentRotation.x = Mathf.Clamp(currentRotation.x - mouseY, -70.0f, 70.0f);
 
-        transform.rotation = Quaternion.Euler(0.0f, currentRotation.y, 0.0f);
-        xRotationTarget.localRotation = Quaternion.Euler(currentRotation.x, 0.0f, currentRotation.z);
+            transform.rotation = Quaternion.Euler(0.0f, currentRotation.y, 0.0f);
+            xRotationTarget.localRotation = Quaternion.Euler(currentRotation.x, 0.0f, currentRotation.z);
+        }
 
-        Vector3 right_axis = transform.right; right_axis.y = 0.0f; right_axis.Normalize();
-        Vector3 forward_axis = transform.forward; forward_axis.y = 0.0f; forward_axis.Normalize();
+        if (moveEnable)
+        {
+            Vector3 right_axis = transform.right; right_axis.y = 0.0f; right_axis.Normalize();
+            Vector3 forward_axis = transform.forward; forward_axis.y = 0.0f; forward_axis.Normalize();
 
-        Vector3 moveDir = (right_axis * Input.GetAxis("Horizontal") +
-                           forward_axis * Input.GetAxis("Vertical")) * Time.deltaTime * moveSpeed;
+            Vector3 moveDir = (right_axis * Input.GetAxis("Horizontal") +
+                               forward_axis * Input.GetAxis("Vertical")) * Time.deltaTime * moveSpeed;
 
-        controller.Move(moveDir);
+            controller.Move(moveDir);
+        }
 
         if (isGrounded)
         {
-            if (Input.GetButtonDown("Jump"))
+            if ((Input.GetButtonDown("Jump")) && (moveEnable))
             {
                 velocity.y = jumpSpeed;
             }
