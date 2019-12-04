@@ -275,12 +275,12 @@ public class PlayerController : MonoBehaviour
             case "examine":
             case "look":
                 return "examine";
-            case "load": return "load";
-            case "save": return "save";
-            case "set": return "set";
+            case "inv":
+            case "inventory":
+                return "inventory";
         }
 
-        return "";
+        return verb;
     }
 
     string GetErrorMessage(List<string> commandString)
@@ -342,5 +342,28 @@ public class PlayerController : MonoBehaviour
         }
 
         return false;
+    }
+
+    public void DisplayInventory()
+    {
+        if ((gameState.inventory == null) || (gameState.inventory.Count == 0))
+        {
+            outputWindow.AddText("You are carrying nothing...");
+        }
+        else
+        {
+            outputWindow.AddText("You are carrying:");
+            foreach (var item in gameState.inventory)
+            {
+                if (item.count > 1)
+                {
+                    outputWindow.AddText(item.item.itemName + " x" + item.count);
+                }
+                else
+                {
+                    outputWindow.AddText(item.item.itemName);
+                }
+            }
+        }
     }
 }
