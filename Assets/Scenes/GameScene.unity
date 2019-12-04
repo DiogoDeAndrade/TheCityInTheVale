@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 2138677392}
-  m_IndirectSpecularColor: {r: 0.285027, g: 0.3713936, b: 0.49601296, a: 1}
+  m_IndirectSpecularColor: {r: 0.2850269, g: 0.3713935, b: 0.49601045, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -211,6 +211,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameCamera: {fileID: 1687258584}
+  asciiCamera: {fileID: 434695234}
+  targetTexture: {fileID: 8400000, guid: ace4b2e8079763e41afbbce7ff54b0c7, type: 2}
   interactionLayers:
     serializedVersion: 2
     m_Bits: 1536
@@ -514,6 +516,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d11cd70b0d6c349489beee0fb5299d1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hasConditions: 1
+  conditions:
+  - condition: '!Examined(apple)'
+    failText: You should look at it first...
   destroyOnPickup: 1
   pickupResponse: 'You pickup the apple...
 
@@ -530,6 +536,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b48cbc1790b94866842fa1fddb8d204, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hasConditions: 0
+  conditions: []
 --- !u!1 &216182099
 GameObject:
   m_ObjectHideFlags: 0
@@ -543,6 +551,9 @@ GameObject:
   - component: {fileID: 216182102}
   - component: {fileID: 216182101}
   - component: {fileID: 216182104}
+  - component: {fileID: 216182105}
+  - component: {fileID: 216182107}
+  - component: {fileID: 216182106}
   m_Layer: 10
   m_Name: PlayerActions
   m_TagString: Untagged
@@ -576,6 +587,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 931b2cc1f28cc4a01b722bfc9c33d2e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hasConditions: 0
+  conditions: []
   filename: save.json
 --- !u!114 &216182102
 MonoBehaviour:
@@ -616,7 +629,51 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0308f144625d4f86b88d6fabce4b281, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hasConditions: 0
+  conditions: []
   filename: save.json
+--- !u!114 &216182105
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 216182099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e00cc7eda6e4424f8917bf0e1582141, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hasConditions: 0
+  conditions: []
+--- !u!114 &216182106
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 216182099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 166276ce6ac01c741a6d8c2edd6ebb85, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hasConditions: 0
+  conditions: []
+--- !u!114 &216182107
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 216182099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 206e14a7dfdd9474eb7b79b055f1ba50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hasConditions: 0
+  conditions: []
 --- !u!1 &244583404
 GameObject:
   m_ObjectHideFlags: 0
@@ -3070,6 +3127,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b48cbc1790b94866842fa1fddb8d204, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hasConditions: 0
+  conditions: []
 --- !u!1 &2138677391
 GameObject:
   m_ObjectHideFlags: 0

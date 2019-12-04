@@ -25,7 +25,7 @@ public class PickupAction : GameAction
         GameState gameState = player.gameState;
 
         gameState.AddItemToInventory(interactiveObject.gameItem);
-        gameState.SetBool("Pickup" + interactiveObject.gameItem.itemName, true);
+        gameState.SetBool("PickedUp(" + interactiveObject.gameItem.itemName + ")", true);
 
         player.outputWindow.AddText(pickupResponse);
 
@@ -42,7 +42,7 @@ public class PickupAction : GameAction
 
         GameState gameState = player.gameState;
 
-        if (gameState.GetBool("Pickup" + interactiveObject.gameItem.itemName))
+        if (gameState.GetBool("PickedUp(" + interactiveObject.gameItem.itemName + ")"))
         {
             Destroy(interactiveObject.gameObject);
         }

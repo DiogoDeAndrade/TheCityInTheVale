@@ -1,9 +1,22 @@
-﻿using System.Collections;
+﻿using NaughtyAttributes;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class GameAction : MonoBehaviour
 {
+    [System.Serializable]
+    public class Condition
+    {
+        public string condition;
+        [TextArea]
+        public string failText;
+    }
+
+    public bool hasConditions = false;
+    [ShowIf("hasConditions")]
+    public List<Condition>  conditions;
+
     protected InteractiveObject interactiveObject;
 
     protected virtual void Start()
@@ -27,6 +40,17 @@ public class GameAction : MonoBehaviour
             if (!interactiveObject.gameItem.IsThisTheItem(commandString[nounIndex]))
             {
                 return false;
+            }
+            foreach (var condition in conditions)
+            {
+                if (false)
+                {
+                    if (condition.failText != "")
+                    {
+                        player.outputWindow.AddText(condition.failText);
+                    }
+                    return false;
+                }
             }
         }
 

@@ -62,6 +62,7 @@ public class PlayerController : MonoBehaviour
         {
             gameState = new GameState();
         }
+        gameState.InitExpressionEvaluator();
 
         if (loadFile != "")
         {
@@ -69,7 +70,7 @@ public class PlayerController : MonoBehaviour
         }
 
         gameState.SetBool("asciimode", true);
-    }
+    }    
 
     IEnumerator LoadCR()
     {

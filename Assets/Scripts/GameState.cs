@@ -6,16 +6,16 @@ using UnityEngine;
 [System.Serializable]
 public class GameState
 {
-    public Vector3      position;
-    public Quaternion   rotation;
+    public Vector3 position;
+    public Quaternion rotation;
 
     [System.Serializable]
     public class InventoryItem
     {
         public GameItem item;
-        public int      count;
+        public int count;
     }
-    public List<InventoryItem>   inventory;
+    public List<InventoryItem> inventory;
 
 
     public enum DataType { Unknown, Bool, Int };
@@ -23,13 +23,13 @@ public class GameState
     [System.Serializable]
     public class DataItem
     {
-        public string   name;
+        public string name;
         public DataType dataType;
-        public bool     bData;
-        public int      iData;
+        public bool bData;
+        public int iData;
     }
 
-    public List<DataItem>   dataItems;
+    public List<DataItem> dataItems;
 
     public void AddItemToInventory(GameItem item)
     {
@@ -69,7 +69,7 @@ public class GameState
     {
         foreach (var i in inventory)
         {
-            if (i.item == item) 
+            if (i.item == item)
             {
                 return (i.count >= count);
             }
@@ -147,4 +147,9 @@ public class GameState
 
         return null;
     }
-}
+
+    public void InitExpressionEvaluator()
+    {
+
+    }
+} 

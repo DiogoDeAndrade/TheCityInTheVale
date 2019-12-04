@@ -20,7 +20,7 @@ public class ExamineAction : GameAction
     {
         GameState gameState = player.gameState;
 
-        gameState.SetBool("Examine" + interactiveObject.gameItem.itemName, true);
+        gameState.SetBool("Examined(" + interactiveObject.gameItem.itemName + ")", true);
 
         player.outputWindow.AddText(interactiveObject.gameItem.textDescription);
 
