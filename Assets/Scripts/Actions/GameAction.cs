@@ -33,7 +33,7 @@ public class GameAction : MonoBehaviour
         return true;
     }
 
-    public virtual bool RunAction(PlayerController player)
+    public virtual bool RunAction(PlayerController player, List<string> commandString)
     {
         return false;
     }

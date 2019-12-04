@@ -118,6 +118,11 @@ public class GameState
         return (int)dataItem.iData;
     }
 
+    public bool Exists(string name)
+    {
+        return GetDataItem(name, false) != null;
+    }
+
     DataItem GetDataItem(string name, bool create_if_not_exist)
     {
         foreach (var v in dataItems)

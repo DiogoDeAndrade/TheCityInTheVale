@@ -40,17 +40,6 @@ public class TextBox : MonoBehaviour
         canvasWidth = canvasScale.referenceResolution.x;
         canvasHeight = canvasScale.referenceResolution.y;
 
-        if (gameCamera.targetTexture)
-        {
-            srcWidth = gameCamera.targetTexture.width;
-            srcHeight = gameCamera.targetTexture.height;
-        }
-        else
-        {
-            srcWidth = Screen.width;
-            srcHeight = Screen.height;
-        }
-
         if (maxLines > 0)
         {
             text.maxVisibleLines = maxLines;
@@ -140,6 +129,17 @@ public class TextBox : MonoBehaviour
         {
             if (floating)
             {
+                if (gameCamera.targetTexture)
+                {
+                    srcWidth = gameCamera.targetTexture.width;
+                    srcHeight = gameCamera.targetTexture.height;
+                }
+                else
+                {
+                    srcWidth = Screen.width;
+                    srcHeight = Screen.height;
+                }
+
                 Vector3 pos = gameCamera.WorldToScreenPoint(lockedObject.position);
 
                 pos.x = Mathf.Round(pos.x);

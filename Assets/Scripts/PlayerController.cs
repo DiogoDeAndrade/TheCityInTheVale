@@ -9,6 +9,8 @@ public class PlayerController : MonoBehaviour
     public enum State { Movement, Command };
 
     public Camera           gameCamera;
+    public Camera           asciiCamera;
+    public RenderTexture    targetTexture;
     public LayerMask        interactionLayers;
     public float            interactionRadius = 10.0f;
     public float            interactionTolerance = 0.25f;
@@ -65,6 +67,8 @@ public class PlayerController : MonoBehaviour
         {
             StartCoroutine(LoadCR());
         }
+
+        gameState.SetBool("asciimode", true);
     }
 
     IEnumerator LoadCR()
@@ -97,6 +101,9 @@ public class PlayerController : MonoBehaviour
                 action.OnLoad(this);
             }
         }
+
+        bool b = gameState.GetBool("asciimode");
+        SetASCIIMode(b);
     }
 
     void Start()
@@ -142,6 +149,33 @@ public class PlayerController : MonoBehaviour
 
         gameState.position = transform.position;
         gameState.rotation = transform.rotation;
+
+        if (gameState.Exists("asciimode"))
+        {
+            bool b = gameState.GetBool("asciimode");
+            SetASCIIMode(b);
+        }
+    }
+
+    void SetASCIIMode(bool b)
+    {
+        if (b)
+        {
+            if (!asciiCamera.isActiveAndEnabled)
+            {
+                asciiCamera.gameObject.SetActive(true);
+                gameCamera.targetTexture = targetTexture;
+            }
+        }
+        else
+        {
+            if (asciiCamera.isActiveAndEnabled)
+            {
+                asciiCamera.gameObject.SetActive(false);
+                gameCamera.targetTexture = null;
+            }
+        }
+        gameState.SetBool("asciimode", b);
     }
 
     public void OnCommand()
@@ -179,7 +213,7 @@ public class PlayerController : MonoBehaviour
                 {
                     if (action.IsValidAction(this, commandString, 1))
                     {
-                        processed = action.RunAction(this);
+                        processed = action.RunAction(this, commandString);
                         if (processed) break;
                     }
                 }
@@ -241,10 +275,9 @@ public class PlayerController : MonoBehaviour
             case "examine":
             case "look":
                 return "examine";
-            case "load":
-                return "load";
-            case "save":
-                return "save";
+            case "load": return "load";
+            case "save": return "save";
+            case "set": return "set";
         }
 
         return "";
@@ -272,6 +305,12 @@ public class PlayerController : MonoBehaviour
                     ret = "Can't " + commandString[0] + " " + commandString[1] + "!";
                 else
                     ret = "I don't see a " + commandString[1] + "!";
+                break;
+            case "set":
+                if (commandString.Count != 3)
+                {
+                    ret = "Sintax: set [variable] [value]";
+                }
                 break;
             default:
                 ret = "Don't know what " + commandString[0] + " is!";

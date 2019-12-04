@@ -17,7 +17,7 @@ public class LoadAction : GameAction
         return true;
     }
 
-    public override bool RunAction(PlayerController player)
+    public override bool RunAction(PlayerController player, List<string> commandString)
     {
         if (!System.IO.File.Exists(filename))
         {
