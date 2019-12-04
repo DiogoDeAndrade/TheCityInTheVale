@@ -14,9 +14,10 @@ public class TextBox : MonoBehaviour
     public Vector3  floatingOffset;
     [ShowIf("floating")]
     public Camera   gameCamera;
+    public int      maxLines = 0;
 
-    TextMeshProUGUI  text;
-    CanvasGroup      canvasGroup;
+    TextMeshProUGUI text;
+    CanvasGroup     canvasGroup;
 
     bool            fadeIn;
     float           timeToFade = 0.0f;
@@ -48,6 +49,11 @@ public class TextBox : MonoBehaviour
         {
             srcWidth = Screen.width;
             srcHeight = Screen.height;
+        }
+
+        if (maxLines > 0)
+        {
+            text.maxVisibleLines = maxLines;
         }
     }
 
@@ -93,7 +99,35 @@ public class TextBox : MonoBehaviour
         if (!fadeIn)
         {
             fadeIn = true;
-            fadeTimer = timeToFade;
+            fadeTimer = fadeTime;
+            canvasGroup.alpha = 0.0f;
+        }
+
+        UpdatePosition();
+    }
+
+    public void AddText(string s, Transform worldObject = null)
+    {
+        text.text += "\n" + s;
+
+        string[] textLines = text.text.Split('\n');
+
+        string str = "";
+        for (int i = Mathf.Max(0, textLines.Length - maxLines); i < textLines.Length; i++)
+        {
+            str += textLines[i];
+            if (i < textLines.Length - 1) str += "\n";
+        }
+
+        text.text = str;
+
+        timeToFade = duration;
+        lockedObject = worldObject;
+
+        if (!fadeIn)
+        {
+            fadeIn = true;
+            fadeTimer = fadeTime;
             canvasGroup.alpha = 0.0f;
         }
 

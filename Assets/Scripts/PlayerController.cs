@@ -15,6 +15,8 @@ public class PlayerController : MonoBehaviour
     public TextBox          lookBox;
     public TMP_InputField   inputField;
     public bool             consecutiveInputs = false;
+    public TextBox          outputWindow;
+    public GameState        gameState;
 
     float timeOfLastInput = 0;
 
@@ -42,6 +44,7 @@ public class PlayerController : MonoBehaviour
                     inputField.text = "";
                     break;
             }
+            _state = value;
         }
     }
 
@@ -51,6 +54,10 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         lookBox.gameCamera = gameCamera;
+        if (gameState == null)
+        {
+            gameState = new GameState();
+        }
     }
 
     void Start()
@@ -99,7 +106,7 @@ public class PlayerController : MonoBehaviour
     {
         string command = inputField.text;
 
-        command = command.Trim();
+        command = command.ToLower().Trim();
 
         if (command == "")
         {
@@ -107,16 +114,132 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        Debug.Log("Command = " + command);
+        command = command.Replace("at", "");
+        command = command.Replace("on", "");
+        command = command.Replace("the", "");
+        command = command.Replace("in", "");
+
+        string[] commandString = command.Split(' ', '\t');
+
+        if (commandString.Length > 0)
+        {            
+            string verb = GetStdVerb(commandString[0]);
+            bool   processed = false;
+
+            List<GameAction> possibleActions = new List<GameAction>();
+            GetAllPossibleActions(possibleActions);
+
+            foreach (var action in possibleActions)
+            {
+                if (action.GetVerb() == verb)
+                {
+                    if (action.IsValidAction(gameState, commandString, 1))
+                    {
+                        processed = action.RunAction(gameState);
+                        if (processed) break;
+                    }
+                }
+            }
+
+            if (!processed)
+            {
+                string error = GetErrorMessage(commandString);
+
+                outputWindow.AddText(error);
+            }
+        }
 
         if (!consecutiveInputs)
         {
             state = State.Movement;
+        }
+        else
+        {
+            inputField.text = "";
+            inputField.ActivateInputField();
         }
     }
 
     public void OnCancelCommand()
     {
         state = State.Movement;
+    }
+
+    void GetAllPossibleActions(List<GameAction> possibleActions)
+    {
+        Collider[] colliders = Physics.OverlapSphere(transform.position, interactionRadius, interactionLayers);
+
+        foreach (var c in colliders)
+        {
+            InteractiveObject interactiveObject = c.GetComponentInChildren<InteractiveObject>();
+            if (interactiveObject == null) interactiveObject = c.GetComponentInParent<InteractiveObject>();
+
+            if (interactiveObject != null)
+            {
+                // Get all possible actions
+                GameAction[] actions = interactiveObject.GetComponentsInChildren<GameAction>();
+                foreach (var a in actions)
+                {
+                    possibleActions.Add(a);
+                }
+            }
+        }
+    }
+
+    string GetStdVerb(string verb)
+    {
+        switch (verb)
+        {
+            case "pickup":
+            case "get":
+            case "grab":
+                return "pickup";
+        }
+
+        return "";
+    }
+
+    string GetErrorMessage(string[] commandString)
+    {
+        string ret = "";
+        string verb = GetStdVerb(commandString[0]);
+
+        switch (verb)
+        {
+            case "pickup":
+                if (commandString.Length == 1)
+                    ret = "What do you want me to " + commandString[0] + "?";
+                else if (IsThereAnObjectWithThatNameNearby(commandString[1]))
+                    ret = "Can't " + commandString[0] + " " + commandString[1] + "!";
+                else
+                    ret = "I don't see a " + commandString[1] + "!";
+                    break;
+            default:
+                ret = "Don't know what " + commandString[0] + " is!";
+                break;
+        }
+
+        return ret;
+    }
+
+    bool IsThereAnObjectWithThatNameNearby(string objectName)
+    {
+        Collider[] colliders = Physics.OverlapSphere(transform.position, interactionRadius, interactionLayers);
+
+        foreach (var c in colliders)
+        {
+            InteractiveObject interactiveObject = c.GetComponentInChildren<InteractiveObject>();
+            if (interactiveObject == null) interactiveObject = c.GetComponentInParent<InteractiveObject>();
+
+            if (interactiveObject != null)
+            {
+                if (interactiveObject.gameItem.IsThisTheItem(objectName))
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }
