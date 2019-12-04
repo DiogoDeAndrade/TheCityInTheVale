@@ -156,14 +156,16 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        command = command.Replace("at", "");
-        command = command.Replace("on", "");
-        command = command.Replace("the", "");
-        command = command.Replace("in", "");
+        List<string> commandString = new List<string>(command.Split(' ', '\t'));
 
-        string[] commandString = command.Split(' ', '\t');
+        commandString.RemoveAll((s) => s == "in");
+        commandString.RemoveAll((s) => s == "at");
+        commandString.RemoveAll((s) => s == "on");
+        commandString.RemoveAll((s) => s == "a");
+        commandString.RemoveAll((s) => s == "an");
+        commandString.RemoveAll((s) => s == "the");
 
-        if (commandString.Length > 0)
+        if (commandString.Count > 0)
         {            
             string verb = GetStdVerb(commandString[0]);
             bool   processed = false;
@@ -236,6 +238,9 @@ public class PlayerController : MonoBehaviour
             case "get":
             case "grab":
                 return "pickup";
+            case "examine":
+            case "look":
+                return "examine";
             case "load":
                 return "load";
             case "save":
@@ -245,7 +250,7 @@ public class PlayerController : MonoBehaviour
         return "";
     }
 
-    string GetErrorMessage(string[] commandString)
+    string GetErrorMessage(List<string> commandString)
     {
         string ret = "";
         string verb = GetStdVerb(commandString[0]);
@@ -253,13 +258,21 @@ public class PlayerController : MonoBehaviour
         switch (verb)
         {
             case "pickup":
-                if (commandString.Length == 1)
+                if (commandString.Count == 1)
                     ret = "What do you want me to " + commandString[0] + "?";
                 else if (IsThereAnObjectWithThatNameNearby(commandString[1]))
                     ret = "Can't " + commandString[0] + " " + commandString[1] + "!";
                 else
                     ret = "I don't see a " + commandString[1] + "!";
                     break;
+            case "examine":
+                if (commandString.Count == 1)
+                    ret = "What do you want me to " + commandString[0] + "?";
+                else if (IsThereAnObjectWithThatNameNearby(commandString[1]))
+                    ret = "Can't " + commandString[0] + " " + commandString[1] + "!";
+                else
+                    ret = "I don't see a " + commandString[1] + "!";
+                break;
             default:
                 ret = "Don't know what " + commandString[0] + " is!";
                 break;
@@ -279,9 +292,12 @@ public class PlayerController : MonoBehaviour
 
             if (interactiveObject != null)
             {
-                if (interactiveObject.gameItem.IsThisTheItem(objectName))
+                if (interactiveObject.gameItem)
                 {
-                    return true;
+                    if (interactiveObject.gameItem.IsThisTheItem(objectName))
+                    {
+                        return true;
+                    }
                 }
             }
         }

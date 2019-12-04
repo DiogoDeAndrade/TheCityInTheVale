@@ -6,8 +6,10 @@ using UnityEngine;
 public class GameItem : ScriptableObject
 {
     public string   itemName;
-    public string   onScreenDescription;
     public string[] synonyms;
+    public string   onScreenDescription;
+    [TextArea]
+    public string   textDescription;
 
     public bool IsThisTheItem(string name)
     {

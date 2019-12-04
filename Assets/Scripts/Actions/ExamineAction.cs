@@ -2,28 +2,27 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SaveAction : GameAction
+public class ExamineAction : GameAction
 {
-    public string filename = "save.json";
-
     public override string GetVerb()
     {
-        return "save";
+        return "examine";
     }
 
     public override bool IsValidAction(PlayerController player, List<string> commandString, int nounIndex)
     {
+        if (!base.IsValidAction(player, commandString, nounIndex)) return false;
+
         return true;
     }
 
     public override bool RunAction(PlayerController player)
     {
-        GameState   gameState = player.gameState;
-        string      json = JsonUtility.ToJson(gameState);
+        GameState gameState = player.gameState;
 
-        player.outputWindow.AddText("Saved " + filename);
+        gameState.SetBool("Examine" + interactiveObject.gameItem.itemName, true);
 
-        System.IO.File.WriteAllText(filename, json);
+        player.outputWindow.AddText(interactiveObject.gameItem.textDescription);
 
         return true;
     }

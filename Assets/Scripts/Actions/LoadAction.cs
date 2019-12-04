@@ -12,7 +12,7 @@ public class LoadAction : GameAction
         return "load";
     }
 
-    public override bool IsValidAction(PlayerController player, string[] commandString, int nounIndex)
+    public override bool IsValidAction(PlayerController player, List<string> commandString, int nounIndex)
     {
         return true;
     }

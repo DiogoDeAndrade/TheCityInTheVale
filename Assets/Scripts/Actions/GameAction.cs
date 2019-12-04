@@ -16,11 +16,11 @@ public class GameAction : MonoBehaviour
         return "";
     }
 
-    public virtual bool IsValidAction(PlayerController player, string[] commandString, int nounIndex)
+    public virtual bool IsValidAction(PlayerController player, List<string> commandString, int nounIndex)
     {
         if (interactiveObject.gameItem != null)
         {
-            if (nounIndex >= commandString.Length)
+            if (nounIndex >= commandString.Count)
             {
                 return false;
             }

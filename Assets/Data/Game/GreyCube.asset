@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: GreyCube
   m_EditorClassIdentifier: 
   itemName: GreyCube
-  onScreenDescription: A boring grey cube
   synonyms:
   - cube
+  onScreenDescription: A boring grey cube
+  textDescription: You get bored looking at the cube...

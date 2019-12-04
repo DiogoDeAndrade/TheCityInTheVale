@@ -13,7 +13,7 @@ public class PickupAction : GameAction
         return "pickup";
     }
 
-    public override bool IsValidAction(PlayerController player, string[] commandString, int nounIndex)
+    public override bool IsValidAction(PlayerController player, List<string> commandString, int nounIndex)
     {
         if (!base.IsValidAction(player, commandString, nounIndex)) return false;
 

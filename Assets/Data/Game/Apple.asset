@@ -13,4 +13,6 @@ MonoBehaviour:
   m_Name: Apple
   m_EditorClassIdentifier: 
   itemName: Apple
+  synonyms: []
   onScreenDescription: A shiny red <color=#FF0000>apple
+  textDescription: This apple looks like a fine specimen of applekind...
