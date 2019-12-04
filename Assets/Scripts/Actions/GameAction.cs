@@ -16,7 +16,7 @@ public class GameAction : MonoBehaviour
         return "";
     }
 
-    public virtual bool IsValidAction(GameState gameState, string[] commandString, int nounIndex)
+    public virtual bool IsValidAction(PlayerController player, string[] commandString, int nounIndex)
     {
         if (interactiveObject.gameItem != null)
         {
@@ -33,8 +33,13 @@ public class GameAction : MonoBehaviour
         return true;
     }
 
-    public virtual bool RunAction(GameState gameState)
+    public virtual bool RunAction(PlayerController player)
     {
         return false;
+    }
+
+    public virtual void OnLoad(PlayerController player)
+    {
+
     }
 }

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f64570e879a11444280b21064e2ed386, type: 3}
   m_Name: GreyCube
   m_EditorClassIdentifier: 
-  itemName: 
-  onScreenDescription: 
-  synonyms: []
+  itemName: GreyCube
+  onScreenDescription: A boring grey cube
+  synonyms:
+  - cube

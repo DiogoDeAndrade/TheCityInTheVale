@@ -6,6 +6,9 @@ using UnityEngine;
 [System.Serializable]
 public class GameState
 {
+    public Vector3      position;
+    public Quaternion   rotation;
+
     [System.Serializable]
     public class InventoryItem
     {

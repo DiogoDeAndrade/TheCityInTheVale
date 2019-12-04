@@ -18,6 +18,8 @@ public class PlayerController : MonoBehaviour
     public TextBox          outputWindow;
     public GameState        gameState;
 
+    static public string loadFile = "";
+
     float timeOfLastInput = 0;
 
     public State    state
@@ -57,6 +59,43 @@ public class PlayerController : MonoBehaviour
         if (gameState == null)
         {
             gameState = new GameState();
+        }
+
+        if (loadFile != "")
+        {
+            StartCoroutine(LoadCR());
+        }
+    }
+
+    IEnumerator LoadCR()
+    {
+        yield return null;
+        yield return null;
+
+        string json = System.IO.File.ReadAllText(loadFile);
+
+        JsonUtility.FromJsonOverwrite(json, gameState);
+
+        outputWindow.AddText("Loaded " + loadFile);
+
+        loadFile = "";
+
+        transform.position = gameState.position;
+        transform.rotation = gameState.rotation;
+
+        var charController = GetComponent<CharacterController>();
+        if (charController)
+        {
+            charController.enabled = false;
+            transform.position = gameState.position;
+            transform.rotation = gameState.rotation;
+            charController.enabled = true;
+
+            var gameActions = FindObjectsOfType<GameAction>();
+            foreach (var action in gameActions)
+            {
+                action.OnLoad(this);
+            }
         }
     }
 
@@ -100,6 +139,9 @@ public class PlayerController : MonoBehaviour
                 state = State.Movement;
             }
         }
+
+        gameState.position = transform.position;
+        gameState.rotation = transform.rotation;
     }
 
     public void OnCommand()
@@ -133,9 +175,9 @@ public class PlayerController : MonoBehaviour
             {
                 if (action.GetVerb() == verb)
                 {
-                    if (action.IsValidAction(gameState, commandString, 1))
+                    if (action.IsValidAction(this, commandString, 1))
                     {
-                        processed = action.RunAction(gameState);
+                        processed = action.RunAction(this);
                         if (processed) break;
                     }
                 }
@@ -194,6 +236,10 @@ public class PlayerController : MonoBehaviour
             case "get":
             case "grab":
                 return "pickup";
+            case "load":
+                return "load";
+            case "save":
+                return "save";
         }
 
         return "";
