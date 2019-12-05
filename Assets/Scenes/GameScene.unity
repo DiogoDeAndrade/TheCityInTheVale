@@ -225,7 +225,8 @@ MonoBehaviour:
   environmentMask:
     serializedVersion: 2
     m_Bits: 512
-  sanityLossSpeed: 40
+  sanityLossSpeed: 5
+  asciiRenderMesh: {fileID: 607889176}
   gameState:
     position: {x: 0, y: 0, z: 0}
     rotation: {x: 0, y: 0, z: 0, w: 0}

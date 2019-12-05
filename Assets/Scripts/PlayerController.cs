@@ -20,11 +20,13 @@ public class PlayerController : MonoBehaviour
     public TextBox          outputWindow;
     public LayerMask        environmentMask;
     public float            sanityLossSpeed = 4.0f;
+    public MeshRenderer     asciiRenderMesh;
     public GameState        gameState;
 
     static public string loadFile = "";
 
     float timeOfLastInput = 0;
+    Material asciiRenderMaterial;
 
     public State    state
     {
@@ -179,14 +181,13 @@ public class PlayerController : MonoBehaviour
             SetASCIIMode(b);
         }
 
-        if (gameState.GetBool("sanity_enabled"))
-        {
-            UpdateSanity();
-        }
+        UpdateSanity();
     }
 
     void UpdateSanity()
     {
+        if (!gameState.GetBool("sanity_enabled")) return;
+
         Light[] lights = FindObjectsOfType<Light>();
 
         bool allOccluded = true;
@@ -217,9 +218,10 @@ public class PlayerController : MonoBehaviour
             }
         }
 
+        float s = gameState.GetFloat("sanity");
+
         if (allOccluded)
-        {
-            float s = gameState.GetFloat("sanity");
+        {            
             if (s > 0.0f)
             {
                 s = Mathf.Max(0, s - Time.deltaTime * sanityLossSpeed);
@@ -237,9 +239,26 @@ public class PlayerController : MonoBehaviour
         else
         {
             float maxSanity = gameState.GetFloat("max_sanity");
-            float s = gameState.GetFloat("sanity");
             s = Mathf.Min(maxSanity, s + Time.deltaTime * sanityLossSpeed * 2);
             gameState.SetFloat("sanity", s);
+        }
+
+        if (asciiRenderMaterial == null)
+        {
+            if (asciiRenderMesh != null)
+            {
+                asciiRenderMaterial = new Material(asciiRenderMesh.material);
+                asciiRenderMesh.material = asciiRenderMaterial;
+            }
+        }
+
+        if (asciiRenderMaterial)
+        {
+            s = s / gameState.GetFloat("max_sanity");
+            float d = Mathf.Clamp01(Mathf.Lerp(1.0f, -1.0f, s));
+            asciiRenderMaterial.SetFloat("_Distortion", d);
+            asciiRenderMaterial.SetFloat("_Speed", Mathf.Lerp(0.0f, 0.025f, d));
+            asciiRenderMaterial.SetColor("_Tint", Color.Lerp(Color.white, Color.red, d));
         }
     }
 
