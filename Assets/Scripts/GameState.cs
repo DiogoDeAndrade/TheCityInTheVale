@@ -125,16 +125,18 @@ public class GameState
 
     DataItem GetDataItem(string name, bool create_if_not_exist)
     {
+        string n = name.ToLower();
+
         foreach (var v in dataItems)
         {
-            if (v.name == name) return v;
+            if (v.name.ToLower() == n) return v;
         }
 
         if (create_if_not_exist)
         {
             DataItem di = new DataItem
             {
-                name = name,
+                name = n,
                 dataType = DataType.Unknown,
                 bData = false,
                 iData = 0
@@ -151,5 +153,22 @@ public class GameState
     public void InitExpressionEvaluator()
     {
 
+    }
+
+    public bool EvaluateCondition(string condition)
+    {
+        string c = condition;
+        bool   negate = false;
+        if (c[0] == '!')
+        {
+            negate = true;
+            c = condition.Substring(1);
+        }
+
+        bool b = GetBool(c);
+
+        if (negate) return !b;
+
+        return b;
     }
 } 

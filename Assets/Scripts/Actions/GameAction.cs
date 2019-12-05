@@ -43,7 +43,7 @@ public class GameAction : MonoBehaviour
             }
             foreach (var condition in conditions)
             {
-                if (false)
+                if (!player.gameState.EvaluateCondition(condition.condition))
                 {
                     if (condition.failText != "")
                     {

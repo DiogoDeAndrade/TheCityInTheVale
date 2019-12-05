@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 2138677392}
-  m_IndirectSpecularColor: {r: 0.2850269, g: 0.3713935, b: 0.49601045, a: 1}
+  m_IndirectSpecularColor: {r: 0.285027, g: 0.3713936, b: 0.49601296, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -518,10 +518,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hasConditions: 1
   conditions:
-  - condition: '!Examined(apple)'
+  - condition: Examined(apple)
     failText: You should look at it first...
   destroyOnPickup: 1
-  pickupResponse: 'You pickup the apple...
+  pickupResponse: 'You pick up the apple...
 
     It looks juicy!'
 --- !u!114 &185523306

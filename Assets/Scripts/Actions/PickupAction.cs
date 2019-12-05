@@ -19,7 +19,7 @@ public class PickupAction : GameAction
 
         return true;
     }
-
+    
     public override bool RunAction(PlayerController player, List<string> commandString)
     {
         GameState gameState = player.gameState;
