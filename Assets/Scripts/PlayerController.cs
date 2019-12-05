@@ -6,7 +6,7 @@ using TMPro;
 
 public class PlayerController : MonoBehaviour
 {
-    public enum State { Movement, Command };
+    public enum State { Movement, Command, Dead };
 
     public Camera           gameCamera;
     public Camera           asciiCamera;
@@ -48,6 +48,10 @@ public class PlayerController : MonoBehaviour
                     inputField.gameObject.SetActive(true);
                     inputField.ActivateInputField();
                     inputField.text = "";
+                    break;
+                case State.Dead:
+                    controller.mouseLookEnable = false;
+                    controller.moveEnable = false;
                     break;
             }
             _state = value;
@@ -137,7 +141,7 @@ public class PlayerController : MonoBehaviour
                 }
             }
 
-            if ((Time.time - timeOfLastInput) > 1.0f)
+            if ((Time.time - timeOfLastInput) > 0.5f)
             {
                 if (Input.GetKeyDown(KeyCode.Return))
                 {
@@ -145,11 +149,24 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
-        if (_state == State.Command)
+        else if (_state == State.Command)
         {
             if (Input.GetKeyDown(KeyCode.Escape))
             {
-                state = State.Movement;
+                if (gameState.GetFloat("sanity") > 0.0f)
+                    state = State.Movement;
+                else
+                    state = State.Dead;
+            }
+        }
+        else if (_state == State.Dead)
+        {
+            if ((Time.time - timeOfLastInput) > 0.5f)
+            {
+                if (Input.GetKeyDown(KeyCode.Return))
+                {
+                    state = State.Command;
+                }
             }
         }
 
@@ -203,8 +220,19 @@ public class PlayerController : MonoBehaviour
         if (allOccluded)
         {
             float s = gameState.GetFloat("sanity");
-            s = Mathf.Max(0, s - Time.deltaTime * sanityLossSpeed);
-            gameState.SetFloat("sanity", s);
+            if (s > 0.0f)
+            {
+                s = Mathf.Max(0, s - Time.deltaTime * sanityLossSpeed);
+                gameState.SetFloat("sanity", s);
+
+                if (s <= 0.0f)
+                {
+                    outputWindow.AddText("");
+                    outputWindow.AddText("Insanity takes you...");
+                    outputWindow.AddText("All reason lost, you wander the vale until thirst and starvation takes you...");
+                    state = State.Dead;
+                }
+            }
         }
         else
         {
@@ -244,7 +272,10 @@ public class PlayerController : MonoBehaviour
 
         if (command == "")
         {
-            state = State.Movement;
+            if (gameState.GetFloat("sanity") > 0.0f)
+                state = State.Movement;
+            else
+                state = State.Dead;
             return;
         }
 
@@ -287,7 +318,10 @@ public class PlayerController : MonoBehaviour
 
         if (!consecutiveInputs)
         {
-            state = State.Movement;
+            if (gameState.GetFloat("sanity") > 0.0f)
+                state = State.Movement;
+            else
+                state = State.Dead;
         }
         else
         {
@@ -298,7 +332,10 @@ public class PlayerController : MonoBehaviour
 
     public void OnCancelCommand()
     {
-        state = State.Movement;
+        if (gameState.GetFloat("sanity") > 0.0f)
+            state = State.Movement;
+        else
+            state = State.Dead;
     }
 
     void GetAllPossibleActions(List<GameAction> possibleActions)
@@ -343,6 +380,11 @@ public class PlayerController : MonoBehaviour
 
     string GetErrorMessage(List<string> commandString)
     {
+        if (gameState.GetFloat("sanity") <= 0.0f)
+        {
+            return "You are dead... You can only restart or load!";
+        }
+
         string ret = "";
         string verb = GetStdVerb(commandString[0]);
 

@@ -37,8 +37,15 @@ public class SanityMeter : MonoBehaviour
 
         string tmp = "XXXXXXXXXXXXXXXXXXXXXXX";
         int n = Mathf.FloorToInt(sanity * tmp.Length);
-
-        text.text = tmp.Substring(0, n);
-        text.color = colorGradient.Evaluate(sanity);
+        if (n > 0)
+        {
+            text.text = tmp.Substring(0, n);
+            text.color = colorGradient.Evaluate(sanity);
+        }
+        else
+        {
+            text.text = "";
+            text.color = colorGradient.Evaluate(0.0f);
+        }
     }
 }

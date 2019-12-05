@@ -31,6 +31,10 @@ public class GameAction : MonoBehaviour
 
     public virtual bool IsValidAction(PlayerController player, List<string> commandString, int nounIndex)
     {
+        if (player.gameState.GetFloat("sanity") <= 0.0f)
+        {
+            return false;
+        }
         if (interactiveObject.gameItem != null)
         {
             if (nounIndex >= commandString.Count)

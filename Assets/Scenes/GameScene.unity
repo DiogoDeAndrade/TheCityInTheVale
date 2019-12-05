@@ -225,7 +225,7 @@ MonoBehaviour:
   environmentMask:
     serializedVersion: 2
     m_Bits: 512
-  sanityLossSpeed: 1
+  sanityLossSpeed: 40
   gameState:
     position: {x: 0, y: 0, z: 0}
     rotation: {x: 0, y: 0, z: 0, w: 0}
@@ -555,6 +555,7 @@ GameObject:
   - component: {fileID: 216182102}
   - component: {fileID: 216182101}
   - component: {fileID: 216182104}
+  - component: {fileID: 216182108}
   - component: {fileID: 216182105}
   - component: {fileID: 216182107}
   - component: {fileID: 216182106}
@@ -674,6 +675,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 206e14a7dfdd9474eb7b79b055f1ba50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hasConditions: 0
+  conditions: []
+--- !u!114 &216182108
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 216182099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ad6f39c581f040a1968649661517e7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   hasConditions: 0
@@ -2783,7 +2798,7 @@ MonoBehaviour:
   floating: 1
   floatingOffset: {x: 40, y: -20, z: 0}
   gameCamera: {fileID: 1687258584}
-  maxLines: 4
+  maxLines: 8
 --- !u!114 &1725120758
 MonoBehaviour:
   m_ObjectHideFlags: 0
