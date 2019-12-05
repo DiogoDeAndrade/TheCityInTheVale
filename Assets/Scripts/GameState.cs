@@ -6,27 +6,28 @@ using UnityEngine;
 [System.Serializable]
 public class GameState
 {
-    public Vector3 position;
-    public Quaternion rotation;
+    public Vector3      position;
+    public Quaternion   rotation;
 
     [System.Serializable]
     public class InventoryItem
     {
         public GameItem item;
-        public int count;
+        public int      count;
     }
     public List<InventoryItem> inventory;
 
 
-    public enum DataType { Unknown, Bool, Int };
+    public enum DataType { Unknown, Bool, Int, Float };
 
     [System.Serializable]
     public class DataItem
     {
-        public string name;
+        public string   name;
         public DataType dataType;
-        public bool bData;
-        public int iData;
+        public bool     bData;
+        public int      iData;
+        public float    fData;
     }
 
     public List<DataItem> dataItems;
@@ -84,8 +85,8 @@ public class GameState
 
         dataItem.dataType = DataType.Bool;
         dataItem.bData = value;
-        if (value) dataItem.iData = 1;
-        else dataItem.iData = 0;
+        if (value) { dataItem.iData = 1; dataItem.fData = 1.0f; }
+        else { dataItem.iData = 0; dataItem.fData = 0.0f; }
     }
 
     public bool GetBool(string name)
@@ -104,6 +105,7 @@ public class GameState
 
         dataItem.dataType = DataType.Int;
         dataItem.iData = value;
+        dataItem.fData = value;
         if (value == 0) dataItem.bData = false;
         else dataItem.bData = true;
     }
@@ -115,7 +117,28 @@ public class GameState
         if (dataItem == null) return 0;
         if (dataItem.dataType != DataType.Int) return 0;
 
-        return (int)dataItem.iData;
+        return dataItem.iData;
+    }
+
+    public void SetFloat(string name, float value)
+    {
+        DataItem dataItem = GetDataItem(name, true);
+
+        dataItem.dataType = DataType.Float;
+        dataItem.fData = value;
+        dataItem.iData = Mathf.FloorToInt(value);
+        if (value == 0.0f) dataItem.bData = false;
+        else dataItem.bData = true;
+    }
+
+    public float GetFloat(string name)
+    {
+        DataItem dataItem = GetDataItem(name, false);
+
+        if (dataItem == null) return 0.0f;
+        if (dataItem.dataType != DataType.Float) return 0.0f;
+
+        return dataItem.fData;
     }
 
     public bool Exists(string name)

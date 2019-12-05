@@ -18,6 +18,8 @@ public class PlayerController : MonoBehaviour
     public TMP_InputField   inputField;
     public bool             consecutiveInputs = false;
     public TextBox          outputWindow;
+    public LayerMask        environmentMask;
+    public float            sanityLossSpeed = 4.0f;
     public GameState        gameState;
 
     static public string loadFile = "";
@@ -70,7 +72,10 @@ public class PlayerController : MonoBehaviour
         }
 
         gameState.SetBool("asciimode", true);
-    }    
+        gameState.SetFloat("max_sanity", 100.0f);
+        gameState.SetFloat("sanity", gameState.GetFloat("max_sanity"));
+        gameState.SetBool("sanity_enabled", true);
+    }
 
     IEnumerator LoadCR()
     {
@@ -155,6 +160,58 @@ public class PlayerController : MonoBehaviour
         {
             bool b = gameState.GetBool("asciimode");
             SetASCIIMode(b);
+        }
+
+        if (gameState.GetBool("sanity_enabled"))
+        {
+            UpdateSanity();
+        }
+    }
+
+    void UpdateSanity()
+    {
+        Light[] lights = FindObjectsOfType<Light>();
+
+        bool allOccluded = true;
+
+        foreach (var l in lights)
+        {
+            if (l.shadows == LightShadows.None) continue;
+
+            Ray ray = new Ray(transform.position, Vector3.up);
+            float maxDistance;
+
+            if (l.type == LightType.Directional)
+            {
+                ray.direction = -l.transform.forward;
+                maxDistance = 1000.0f;
+            }
+            else
+            {
+                ray.direction = (l.transform.position - ray.origin);
+                maxDistance = ray.direction.magnitude;
+                ray.direction.Normalize();
+            }
+
+            if (!Physics.Raycast(ray, maxDistance, environmentMask))
+            {
+                allOccluded = false;
+                break;
+            }
+        }
+
+        if (allOccluded)
+        {
+            float s = gameState.GetFloat("sanity");
+            s = Mathf.Max(0, s - Time.deltaTime * sanityLossSpeed);
+            gameState.SetFloat("sanity", s);
+        }
+        else
+        {
+            float maxSanity = gameState.GetFloat("max_sanity");
+            float s = gameState.GetFloat("sanity");
+            s = Mathf.Min(maxSanity, s + Time.deltaTime * sanityLossSpeed * 2);
+            gameState.SetFloat("sanity", s);
         }
     }
 
