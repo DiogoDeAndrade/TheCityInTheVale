@@ -21,7 +21,7 @@ public class SaveAction : GameAction
         GameState   gameState = player.gameState;
         string      json = JsonUtility.ToJson(gameState);
 
-        player.outputWindow.AddText("Saved " + filename);
+        player.logWindow.AddText("Saved " + filename);
 
         System.IO.File.WriteAllText(filename, json);
 

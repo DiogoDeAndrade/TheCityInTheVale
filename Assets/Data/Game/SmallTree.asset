@@ -10,9 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f64570e879a11444280b21064e2ed386, type: 3}
-  m_Name: Apple
+  m_Name: SmallTree
   m_EditorClassIdentifier: 
-  itemName: Apple
-  synonyms: []
-  onScreenDescription: A shiny red <color=#FF0000>apple
-  textDescription: This apple looks like a fine specimen of applekind...
+  itemName: Small Tree
+  synonyms:
+  - tree
+  onScreenDescription: A small tree
+  textDescription: A small tree
+  listContentsOnDescription: 0
+  isContainer: 0
+  contents: []
+  canRead: 0
+  readPages: []

@@ -27,7 +27,7 @@ public class PickupAction : GameAction
         gameState.AddItemToInventory(interactiveObject.gameItem);
         gameState.SetBool("PickedUp(" + interactiveObject.gameItem.itemName + ")", true);
 
-        player.outputWindow.AddText(pickupResponse);
+        player.logWindow.AddText(pickupResponse);
 
         if (destroyOnPickup)
         {

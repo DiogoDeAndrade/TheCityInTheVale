@@ -6,7 +6,7 @@ using TMPro;
 
 public class PlayerController : MonoBehaviour
 {
-    public enum State { Movement, Command, Dead };
+    public enum State { Movement, Command, ModalText, Dead };
 
     public Camera           gameCamera;
     public Camera           asciiCamera;
@@ -17,46 +17,83 @@ public class PlayerController : MonoBehaviour
     public TextBox          lookBox;
     public TMP_InputField   inputField;
     public bool             consecutiveInputs = false;
-    public TextBox          outputWindow;
+    public TextBox          logWindow;
+    public TextBox          modalText;
     public LayerMask        environmentMask;
     public float            sanityLossSpeed = 4.0f;
     public MeshRenderer     asciiRenderMesh;
     public GameState        gameState;
+    public GameObject       torch;
+    public GameItem         litTorchItem;
 
     static public string loadFile = "";
 
-    float timeOfLastInput = 0;
-    Material asciiRenderMaterial;
+    float           timeOfLastInput = 0;
+    Material        asciiRenderMaterial;
+    int             nPage;
+    List<string>    currentPages;
+    bool            inStateChange = false;
 
     public State    state
     {
         get { return _state; }
         set
         {
+            if (inStateChange) return;
+
+            inStateChange = true;
+
+            bool fpsEnable = false;
+            bool textEnable = false;
+
             switch (value)
             {
                 case State.Movement:
                     timeOfLastInput = Time.time;
-                    controller.mouseLookEnable = true;
-                    controller.moveEnable = true;
-                    EventSystem.current.SetSelectedGameObject(null);
-                    inputField.DeactivateInputField(true);
-                    inputField.gameObject.SetActive(false);
+                    fpsEnable = true;
+                    textEnable = false;
                     break;
                 case State.Command:
-                    controller.mouseLookEnable = false;
-                    controller.moveEnable = false;
-                    EventSystem.current.SetSelectedGameObject(inputField.gameObject);
-                    inputField.gameObject.SetActive(true);
-                    inputField.ActivateInputField();
-                    inputField.text = "";
+                    timeOfLastInput = Time.time;
+                    fpsEnable = false;
+                    textEnable = true;
                     break;
                 case State.Dead:
-                    controller.mouseLookEnable = false;
-                    controller.moveEnable = false;
+                    fpsEnable = false;
+                    textEnable = true;
+                    break;
+                case State.ModalText:
+                    timeOfLastInput = Time.time;
+                    fpsEnable = false;
+                    textEnable = false;
                     break;
             }
+
+            controller.mouseLookEnable = fpsEnable;
+            controller.moveEnable = fpsEnable;
+            if (textEnable)
+            {
+                if (!EventSystem.current.alreadySelecting)
+                {
+                    EventSystem.current.SetSelectedGameObject(inputField.gameObject);
+                    inputField.gameObject.SetActive(true);
+                }
+                inputField.ActivateInputField();
+                inputField.text = "";
+            }
+            else
+            {
+                if (!EventSystem.current.alreadySelecting)
+                {
+                    EventSystem.current.SetSelectedGameObject(null);
+                }
+                inputField.DeactivateInputField(true);
+                inputField.gameObject.SetActive(false);
+            }
+
             _state = value;
+
+            inStateChange = false;
         }
     }
 
@@ -92,7 +129,7 @@ public class PlayerController : MonoBehaviour
 
         JsonUtility.FromJsonOverwrite(json, gameState);
 
-        outputWindow.AddText("Loaded " + loadFile);
+        logWindow.AddText("Loaded " + loadFile);
 
         loadFile = "";
 
@@ -135,7 +172,7 @@ public class PlayerController : MonoBehaviour
                 var interactive = hit.collider.GetComponentInParent<InteractiveObject>();
                 if (interactive)
                 {
-                    if (interactive.canLook)
+                    if ((interactive.canLook) && (interactive.enabled))
                     {
                         lookBox.SetText(interactive.gameItem.onScreenDescription, interactive.transform);
                         break;
@@ -171,6 +208,27 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
+        else if (_state == State.ModalText)
+        {
+            if ((Time.time - timeOfLastInput) > 0.5f)
+            {
+                if ((Input.GetKeyDown(KeyCode.Return)) || (Input.GetKeyDown(KeyCode.RightArrow)))
+                {
+                    if (nPage < currentPages.Count - 1) nPage++;
+                    UpdateModalText();
+                }
+                else if (Input.GetKeyDown(KeyCode.LeftArrow))
+                {
+                    if (nPage > 0) nPage--;
+                    UpdateModalText();
+                }
+                else if (Input.GetKeyDown(KeyCode.Escape))
+                {
+                    modalText.FadeOut();
+                    state = State.Movement;
+                }
+            }
+        }
 
         gameState.position = transform.position;
         gameState.rotation = transform.rotation;
@@ -182,6 +240,7 @@ public class PlayerController : MonoBehaviour
         }
 
         UpdateSanity();
+        UpdateTorch();
     }
 
     void UpdateSanity()
@@ -232,9 +291,9 @@ public class PlayerController : MonoBehaviour
 
                 if (s <= 0.0f)
                 {
-                    outputWindow.AddText("");
-                    outputWindow.AddText("Insanity takes you...");
-                    outputWindow.AddText("All reason lost, you wander the vale until thirst and starvation takes you...");
+                    logWindow.AddText("");
+                    logWindow.AddText("Insanity takes you...");
+                    logWindow.AddText("All reason lost, you wander the vale until thirst and starvation takes you...");
                     state = State.Dead;
                 }
             }
@@ -263,6 +322,11 @@ public class PlayerController : MonoBehaviour
             asciiRenderMaterial.SetFloat("_Speed", Mathf.Lerp(0.0f, 0.025f, d));
             asciiRenderMaterial.SetColor("_Tint", Color.Lerp(Color.white, Color.red, d));
         }
+    }
+
+    void UpdateTorch()
+    {
+        torch.SetActive(gameState.HasItem(litTorchItem));
     }
 
     void SetASCIIMode(bool b)
@@ -309,6 +373,7 @@ public class PlayerController : MonoBehaviour
         commandString.RemoveAll((s) => s == "a");
         commandString.RemoveAll((s) => s == "an");
         commandString.RemoveAll((s) => s == "the");
+        commandString.RemoveAll((s) => s == "with");
 
         if (commandString.Count > 0)
         {            
@@ -334,7 +399,7 @@ public class PlayerController : MonoBehaviour
             {
                 string error = GetErrorMessage(commandString);
 
-                outputWindow.AddText(error);
+                logWindow.AddText(error);
             }
         }
 
@@ -355,9 +420,17 @@ public class PlayerController : MonoBehaviour
     public void OnCancelCommand()
     {
         if (gameState.GetFloat("sanity") > 0.0f)
-            state = State.Movement;
+        {
+            if (state == State.Command)
+
+            {
+                state = State.Movement;
+            }
+        }
         else
+        {
             state = State.Dead;
+        }
     }
 
     void GetAllPossibleActions(List<GameAction> possibleActions)
@@ -371,11 +444,31 @@ public class PlayerController : MonoBehaviour
 
             if (interactiveObject != null)
             {
-                // Get all possible actions
-                GameAction[] actions = interactiveObject.GetComponentsInChildren<GameAction>();
-                foreach (var a in actions)
+                if (!interactiveObject.enabled) continue;
+
+                Vector3 playerPos = transform.position + Vector3.up * 1.8f;
+                Vector3 objectPos = interactiveObject.GetCenter();
+                Vector3 toInteractive = objectPos - playerPos;
+                Ray ray = new Ray(playerPos, toInteractive.normalized);
+
+                bool collision = false;
+                RaycastHit[] hits = Physics.RaycastAll(ray, toInteractive.magnitude, environmentMask);
+                foreach (var hit in hits)
                 {
-                    possibleActions.Add(a);
+                    collision = true;
+                }
+
+                if (!collision)
+                {
+                    // Get all possible actions
+                    GameAction[] actions = interactiveObject.GetComponentsInChildren<GameAction>();
+                    foreach (var a in actions)
+                    {
+                        if (a.enabled)
+                        {
+                            possibleActions.Add(a);
+                        }
+                    }
                 }
             }
         }
@@ -395,6 +488,12 @@ public class PlayerController : MonoBehaviour
             case "inv":
             case "inventory":
                 return "inventory";
+            case "use":
+            case "combine":
+                return "use";
+            case "quit":
+            case "exit":
+                return "quit";
         }
 
         return verb;
@@ -404,7 +503,7 @@ public class PlayerController : MonoBehaviour
     {
         if (gameState.GetFloat("sanity") <= 0.0f)
         {
-            return "You are dead... You can only restart or load!";
+            return "You are dead... You can only restart, load or quit!";
         }
 
         string ret = "";
@@ -420,6 +519,7 @@ public class PlayerController : MonoBehaviour
                 else
                     ret = "I don't see a " + commandString[1] + "!";
                     break;
+            case "read":
             case "examine":
                 if (commandString.Count == 1)
                     ret = "What do you want me to " + commandString[0] + "?";
@@ -432,6 +532,25 @@ public class PlayerController : MonoBehaviour
                 if (commandString.Count != 3)
                 {
                     ret = "Sintax: set [variable] [value]";
+                }
+                break;
+            case "use":
+                if (commandString.Count < 2)
+                {
+                    ret = "What do you want to use?";
+                }
+                else if (commandString.Count < 3)
+                {
+                    ret = "With what you want to use " + commandString[1] + "?";
+                }
+                else
+                {
+                    if (!IsThereAnObjectWithThatNameNearby(commandString[2]))
+                        ret = "I don't see a " + commandString[2] + "!";
+                    else if (!gameState.HasItem(commandString[1]))
+                    {
+                        ret = "You don't have a " + commandString[1] + "!";
+                    }
                 }
                 break;
             default:
@@ -453,7 +572,7 @@ public class PlayerController : MonoBehaviour
 
             if (interactiveObject != null)
             {
-                if (interactiveObject.gameItem)
+                if ((interactiveObject.gameItem) && (interactiveObject.enabled))
                 {
                     if (interactiveObject.gameItem.IsThisTheItem(objectName))
                     {
@@ -470,22 +589,39 @@ public class PlayerController : MonoBehaviour
     {
         if ((gameState.inventory == null) || (gameState.inventory.Count == 0))
         {
-            outputWindow.AddText("You are carrying nothing...");
+            logWindow.AddText("You are carrying nothing...");
         }
         else
         {
-            outputWindow.AddText("You are carrying:");
+            logWindow.AddText("You are carrying:");
             foreach (var item in gameState.inventory)
             {
                 if (item.count > 1)
                 {
-                    outputWindow.AddText(item.item.itemName + " x" + item.count);
+                    logWindow.AddText(item.item.itemName + " x" + item.count);
                 }
                 else
                 {
-                    outputWindow.AddText(item.item.itemName);
+                    logWindow.AddText(item.item.itemName);
                 }
             }
         }
+    }
+
+    public void Read(List<string> pages)
+    {
+        logWindow.FadeOut();
+
+        nPage = 0;
+        currentPages = pages;
+
+        UpdateModalText();
+
+        state = State.ModalText;
+    }
+
+    void UpdateModalText()
+    {
+        modalText.SetText(currentPages[nPage]);
     }
 }

@@ -59,11 +59,11 @@ public class GameState
             if (i.item == item)
             {
                 i.count -= howMany;
-                return;
+                break;
             }
         }
 
-        inventory.RemoveAll((i) => i.count == 0);
+        inventory.RemoveAll((i) => i.count <= 0);
     }
 
     public bool HasItem(GameItem item, int count = -1)
@@ -77,6 +77,24 @@ public class GameState
         }
 
         return false;
+    }
+
+    public bool HasItem(string itemName, int count = -1)
+    {
+        foreach (var i in inventory)
+        {
+            if (i.item.IsThisTheItem(itemName))
+            {
+                return (i.count >= count);
+            }
+        }
+
+        return false;
+    }
+
+    public bool HasPickedUp(GameItem item)
+    {
+        return GetBool("PickedUp(" + item.name + ")");
     }
 
     public void SetBool(string name, bool value)

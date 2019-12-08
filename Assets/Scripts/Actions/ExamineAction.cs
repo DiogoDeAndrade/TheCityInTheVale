@@ -20,9 +20,44 @@ public class ExamineAction : GameAction
     {
         GameState gameState = player.gameState;
 
-        gameState.SetBool("Examined(" + interactiveObject.gameItem.itemName + ")", true);
+        // Check if it's this object
+        if (interactiveObject.gameItem.IsThisTheItem(commandString[1]))
+        {
+            gameState.SetBool("Examined(" + interactiveObject.gameItem.itemName + ")", true);
 
-        player.outputWindow.AddText(interactiveObject.gameItem.textDescription);
+            player.logWindow.AddText(interactiveObject.gameItem.textDescription);
+            if ((interactiveObject.gameItem.isContainer) && (interactiveObject.gameItem.listContentsOnDescription))
+            {
+                var contents = interactiveObject.gameItem.GetContents(player);
+                if (contents.Count == 0)
+                {
+                    player.logWindow.AddText("It's empty...");
+                }
+                else
+                {
+                    player.logWindow.AddText("You see inside:");
+                    foreach (var item in contents)
+                    {
+                        player.logWindow.AddText(item.itemName);
+                    }
+                }
+            }
+        }
+        else
+        {
+            var contents = interactiveObject.gameItem.GetContents(player);
+
+            foreach (var item in contents)
+            {
+                if (item.IsThisTheItem(commandString[1]))
+                {
+                    gameState.SetBool("Examined(" + item.itemName + ")", true);
+                    player.logWindow.AddText(item.textDescription);
+
+                    return true;
+                }
+            }
+        }
 
         return true;
     }

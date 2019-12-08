@@ -79,6 +79,13 @@ public class TextBox : MonoBehaviour
         UpdatePosition();
     }
 
+    public void FadeOut()
+    {
+        canvasGroup.alpha = 1.0f;
+        fadeTimer = fadeTime;
+        fadeIn = false;
+    }
+
     public void SetText(string s, Transform worldObject = null)
     {
         text.text = s;
@@ -140,7 +147,15 @@ public class TextBox : MonoBehaviour
                     srcHeight = Screen.height;
                 }
 
-                Vector3 pos = gameCamera.WorldToScreenPoint(lockedObject.position);
+                Vector3 centerPos = lockedObject.position;
+
+                InteractiveObject io = lockedObject.GetComponent<InteractiveObject>();
+                if (io != null)
+                {
+                    centerPos = io.GetCenter();
+                }
+
+                Vector3 pos = gameCamera.WorldToScreenPoint(centerPos);
 
                 pos.x = Mathf.Round(pos.x);
                 pos.y = Mathf.Round(pos.y);

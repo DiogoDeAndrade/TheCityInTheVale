@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f64570e879a11444280b21064e2ed386, type: 3}
+  m_Name: OpenFootlocker
+  m_EditorClassIdentifier: 
+  itemName: Footlocker
+  synonyms:
+  - chest
+  - box
+  onScreenDescription: A sturdy footlocker
+  textDescription: 'A sturdy footlocker.
+
+    It is open.'
+  listContentsOnDescription: 1
+  isContainer: 1
+  contents:
+  - {fileID: 11400000, guid: 6a00ae4fbb8f3444bbe58403e394f599, type: 2}
+  - {fileID: 11400000, guid: 820f2f28158a87e488aa7e2cb38a92ef, type: 2}
+  - {fileID: 11400000, guid: ce31df9817d91cd45924e69d9a15638a, type: 2}
+  canRead: 0
+  readPages: []

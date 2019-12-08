@@ -43,7 +43,20 @@ public class GameAction : MonoBehaviour
             }
             if (!interactiveObject.gameItem.IsThisTheItem(commandString[nounIndex]))
             {
-                return false;
+                if (!interactiveObject.gameItem.isContainer) return false;
+
+                bool found = false;
+                var contents = interactiveObject.gameItem.GetContents(player);
+                foreach (var item in contents)
+                {
+                    if (item.IsThisTheItem(commandString[nounIndex]))
+                    {
+                        found = true;
+                        break;
+                    }
+                }
+
+                if(!found) return false;
             }
             foreach (var condition in conditions)
             {
@@ -51,7 +64,7 @@ public class GameAction : MonoBehaviour
                 {
                     if (condition.failText != "")
                     {
-                        player.outputWindow.AddText(condition.failText);
+                        player.logWindow.AddText(condition.failText);
                     }
                     return false;
                 }
@@ -69,5 +82,22 @@ public class GameAction : MonoBehaviour
     public virtual void OnLoad(PlayerController player)
     {
 
+    }
+
+    protected void DisableAllActions()
+    {
+        GameAction[] actions = GetComponentsInChildren<GameAction>();
+        foreach (var action in actions)
+        {
+            action.enabled = false;
+        }
+    }
+
+    protected void DisableInteractiveObject()
+    {
+        if (interactiveObject)
+        {
+            interactiveObject.enabled = false;
+        }
     }
 }

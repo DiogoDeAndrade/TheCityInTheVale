@@ -13,6 +13,8 @@ public class InventoryExamineAction : GameAction
     {
         if (commandString.Count < 2) return false;
 
+        if (!player.gameState.HasItem(commandString[nounIndex])) return false;
+
         return true;
     }
 
@@ -28,7 +30,7 @@ public class InventoryExamineAction : GameAction
         {
             if (item.item.IsThisTheItem(commandString[1]))
             {
-                player.outputWindow.AddText(item.item.textDescription);
+                player.logWindow.AddText(item.item.textDescription);
                 return true;
             }
         }

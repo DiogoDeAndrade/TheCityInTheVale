@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f64570e879a11444280b21064e2ed386, type: 3}
+  m_Name: ClosedFootlocker
+  m_EditorClassIdentifier: 
+  itemName: Footlocker
+  synonyms:
+  - chest
+  - box
+  onScreenDescription: A sturdy footlocker
+  textDescription: 'A sturdy footlocker.
+
+    It is closed.
+
+    You remember the trouble it was dragging it around...'
+  canRead: 0
+  readPages: []

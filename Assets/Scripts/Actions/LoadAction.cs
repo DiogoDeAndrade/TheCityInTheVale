@@ -21,7 +21,7 @@ public class LoadAction : GameAction
     {
         if (!System.IO.File.Exists(filename))
         {
-            player.outputWindow.AddText("Can't open file " + filename);
+            player.logWindow.AddText("Can't open file " + filename);
             return false;
         }
 

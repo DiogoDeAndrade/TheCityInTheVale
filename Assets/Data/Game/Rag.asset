@@ -10,10 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f64570e879a11444280b21064e2ed386, type: 3}
-  m_Name: GreyCube
+  m_Name: Rag
   m_EditorClassIdentifier: 
-  itemName: GreyCube
+  itemName: Rag
   synonyms:
-  - cube
-  onScreenDescription: A boring grey cube
-  textDescription: You get bored looking at the cube...
+  - cloth
+  onScreenDescription: A piece of cloth
+  textDescription: A small piece of cloth. The rest of it I used to bandage some cuts
+    after the landslide.
+  listContentsOnDescription: 0
+  isContainer: 0
+  contents: []
+  canRead: 0
+  readPages: []

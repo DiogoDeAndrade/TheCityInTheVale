@@ -4,20 +4,26 @@ using UnityEngine;
 
 public class InventoryAction : GameAction
 {
-    public override string GetVerb()
+    protected GameState.InventoryItem GetItem(PlayerController player, List<string> commandString, int nounIndex)
     {
-        return "inventory";
+        if (nounIndex < commandString.Count)
+        {
+            foreach (var item in player.gameState.inventory)
+            {
+                if (item.item.IsThisTheItem(commandString[nounIndex]))
+                {
+                    return item;
+                }
+            }            
+        }
+
+        return null;
     }
 
     public override bool IsValidAction(PlayerController player, List<string> commandString, int nounIndex)
     {
-        return true;
-    }
+        if (GetItem(player, commandString, nounIndex) == null) return false;
 
-    public override bool RunAction(PlayerController player, List<string> commandString)
-    {
-        player.DisplayInventory();
-
-        return true;
+        return base.IsValidAction(player, commandString, nounIndex);
     }
 }

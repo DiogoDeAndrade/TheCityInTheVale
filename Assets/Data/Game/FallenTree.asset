@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f64570e879a11444280b21064e2ed386, type: 3}
+  m_Name: FallenTree
+  m_EditorClassIdentifier: 
+  itemName: Fallen Tree
+  synonyms:
+  - tree
+  onScreenDescription: Fallen tree
+  textDescription: A recently cut tree
+  listContentsOnDescription: 1
+  isContainer: 1
+  contents:
+  - {fileID: 11400000, guid: 69f64d92352405b4ea76d8f62c0f74a9, type: 2}
+  canRead: 0
+  readPages: []

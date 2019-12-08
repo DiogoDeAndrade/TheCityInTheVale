@@ -1,0 +1,69 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f64570e879a11444280b21064e2ed386, type: 3}
+  m_Name: Diary
+  m_EditorClassIdentifier: 
+  itemName: Book
+  synonyms:
+  - diary
+  - log
+  onScreenDescription: Book
+  textDescription: A book with an elaborate leather cover. It looks like some sort
+    of diary.
+  canRead: 1
+  readPages:
+  - "8 June 1951\r\n\r\nI've found the most curious book in the Miskatonic University
+    library... \r\nAt first glance, it looks like the mad ramblings of a certain arab
+    called \r\nAbdul Alhazred, but on closer inspection it reads more like a mix of
+    occult \r\nvisions and fanciful reinterpretations of History. \r\nIt tells of
+    titans of a time before the dawn of Men.\r\nIt is most peculiar, at the same time
+    disturbing and compelling, and I can't \r\nseem to be able to put it down!"
+  - "27 September 1951\r\n\r\nThe book has been consuming my life for the last few
+    months.\r\nAs I dig deeper into the arcane incantations and the vivid descriptions
+    of\r\nnightmares, I'm more and more convinced that there is some truth to some
+    \r\nof the insanity of the mad arab!\r\n\r\nReinterpreting some of Plato's writings
+    on Atlantis and Er, they are chillingly \r\nclose to some of the more descriptive
+    ramblings of Abdul Alhazred.\r\nI've even cross-referenced some of the terrifying
+    creatures of Norse, Egyptian\r\nand Greek mythology with some of the drawings
+    (that I'm convinced we're drawn in blood!)\r\npresent in the book!"
+  - "7 January 1952\r\n\r\nI've secured some funding from the University and some
+    good men of the city.\r\nI feel they're giving me their money moreso from pity
+    than an actual belief in the \r\nstrange visions I'm painting in my own ramblings...
+    \r\nI feel I'm falling into the same delusions as the mad prophet (as I now think
+    of him),\r\nbut I can deny my feelings on this matter anymore as I believe the
+    sun will rise again\r\ntomorrow...\r\nMy extensive research into the book and
+    all the cross-referencing I've done have bear\r\nfruit, as I'm fairly confident
+    about the location of one of the ancient cities of this lost \r\nforgotten civilization."
+  - "14 April 1952\r\n\r\nWe've arrived to the island I identified as the location
+    of the great city of Zak'vuur.\r\nI see no trace of civilization, but if I am
+    right, it has been millenia since anybody\r\nwalked these shores.\r\nTomorrow,
+    me and my men we'll start moving inland..."
+  - "15 April 1952\r\n\r\nBlast it! While passing through a cleft, one of my men disturbed
+    some large rocks, that\r\ndislodged and fell down, killing my men and blocking
+    my path back!\r\nI'm alone now...\r\nI should go back to the boat and get more
+    men....\r\nI should...\r\nI shouldn't...\r\nI can't...\r\nI need to move forward...\r\nI
+    feel it..."
+  - "16 April 1952\r\n\r\nWith a lot of effort, I've dragged what remains of my equipment
+    towards a valley. \r\nI've noticed a purple light shining in the night, and I'm
+    using it to guide my way, through \r\nthe night and most of the day...\r\n"
+  - "16 April 1952 (cont.)\r\n\r\nI've found it, the valley!\r\nI set up my camp near
+    a ancient structure...\r\nInitally, that structure looked just like a cave entrance,
+    but on closer inspection it revealed \r\nthe entrance to a structure... Strangely,
+    it seems to be the only structure around.\r\nI'm a bit disapointed, since I was
+    expecting to find a whole city, but even a structure that can\r\nprovide me a
+    clue about the fate of this civilization older than Mankind would be worth it!\r\nNight
+    is falling, so I'm waiting until the morning to start my investigations.\r\n\r\nI
+    can't shake the feeling that something is watching me, but it is probably just
+    my nerves...\n"
+  - 'There''s an hastily scribled note in the last page of the diary.
+
+    It says 12L8R5L.'
