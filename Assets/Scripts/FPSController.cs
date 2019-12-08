@@ -17,6 +17,7 @@ public class FPSController : MonoBehaviour
     [Header("Movement")]
     public bool         moveEnable = true;
     public float        moveSpeed = 4.0f;
+    public float        runSpeed = 8.0f;
     public float        jumpSpeed = 20.0f;
 
     Vector3             currentRotation;
@@ -62,9 +63,10 @@ public class FPSController : MonoBehaviour
         {
             Vector3 right_axis = transform.right; right_axis.y = 0.0f; right_axis.Normalize();
             Vector3 forward_axis = transform.forward; forward_axis.y = 0.0f; forward_axis.Normalize();
+            float speed = (Input.GetKey(KeyCode.LeftShift)) ? (runSpeed) : (moveSpeed);
 
             Vector3 moveDir = (right_axis * Input.GetAxis("Horizontal") +
-                               forward_axis * Input.GetAxis("Vertical")) * Time.deltaTime * moveSpeed;
+                               forward_axis * Input.GetAxis("Vertical")) * Time.deltaTime * speed;
 
             controller.Move(moveDir);
         }

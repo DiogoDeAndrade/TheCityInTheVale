@@ -187,6 +187,7 @@ public class PlayerController : MonoBehaviour
     void UpdateSanity()
     {
         if (!gameState.GetBool("sanity_enabled")) return;
+        if (state != State.Movement) return;
 
         Light[] lights = FindObjectsOfType<Light>();
 
@@ -194,20 +195,22 @@ public class PlayerController : MonoBehaviour
 
         foreach (var l in lights)
         {
-            if (l.shadows == LightShadows.None) continue;
+            //if (l.shadows == LightShadows.None) continue;
 
             Ray ray = new Ray(transform.position, Vector3.up);
             float maxDistance;
 
             if (l.type == LightType.Directional)
             {
-                ray.direction = -l.transform.forward;
+                ray.origin = transform.position - l.transform.forward * 1000.0f;
+                ray.direction = l.transform.forward;
                 maxDistance = 1000.0f;
             }
             else
             {
-                ray.direction = (l.transform.position - ray.origin);
-                maxDistance = ray.direction.magnitude;
+                Vector3 rayDir = (l.transform.position - ray.origin);
+                ray.direction = rayDir;
+                maxDistance = rayDir.magnitude;
                 ray.direction.Normalize();
             }
 
