@@ -6,7 +6,7 @@ using TMPro;
 
 public class PlayerController : MonoBehaviour
 {
-    public enum State { Movement, Command, ModalText, Dead };
+    public enum State { Movement, Command, ModalText, Dead, Dying };
 
     public Camera           gameCamera;
     public Camera           asciiCamera;
@@ -165,7 +165,10 @@ public class PlayerController : MonoBehaviour
     {
         if (_state == State.Movement)
         {
-            RaycastHit[] hits = Physics.SphereCastAll(gameCamera.transform.position, interactionTolerance, gameCamera.transform.forward, interactionRadius, interactionLayers);
+            RaycastHit[] hitsArray = Physics.SphereCastAll(gameCamera.transform.position, interactionTolerance, gameCamera.transform.forward, interactionRadius, interactionLayers);
+            List<RaycastHit> hits = new List<RaycastHit>(hitsArray);
+
+            hits.Sort((h1, h2) => h1.distance.CompareTo(h2.distance));
 
             foreach (var hit in hits)
             {
@@ -208,11 +211,36 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
+        else if (_state == State.Dying)
+        {
+            float s = gameState.GetFloat("sanity");
+            s = Mathf.Max(0, s - Time.deltaTime * 25.0f);
+            gameState.SetFloat("sanity", s);
+            if (s <= 0)
+            {
+                _state = State.Dead;
+            }
+
+            UpdateSanityVFX();
+        }
         else if (_state == State.ModalText)
         {
             if ((Time.time - timeOfLastInput) > 0.5f)
             {
-                if ((Input.GetKeyDown(KeyCode.Return)) || (Input.GetKeyDown(KeyCode.RightArrow)))
+                if (Input.GetKeyDown(KeyCode.Return))
+                {
+                    if (currentPages.Count > 1)
+                    {
+                        if (nPage < currentPages.Count - 1) nPage++;
+                        UpdateModalText();
+                    }
+                    else
+                    {
+                        modalText.FadeOut();
+                        state = State.Movement;
+                    }
+                }
+                else if (Input.GetKeyDown(KeyCode.RightArrow))
                 {
                     if (nPage < currentPages.Count - 1) nPage++;
                     UpdateModalText();
@@ -283,7 +311,7 @@ public class PlayerController : MonoBehaviour
         float s = gameState.GetFloat("sanity");
 
         if (allOccluded)
-        {            
+        {
             if (s > 0.0f)
             {
                 s = Mathf.Max(0, s - Time.deltaTime * sanityLossSpeed);
@@ -305,6 +333,11 @@ public class PlayerController : MonoBehaviour
             gameState.SetFloat("sanity", s);
         }
 
+        UpdateSanityVFX();
+    }
+
+    void UpdateSanityVFX()
+    { 
         if (asciiRenderMaterial == null)
         {
             if (asciiRenderMesh != null)
@@ -316,6 +349,7 @@ public class PlayerController : MonoBehaviour
 
         if (asciiRenderMaterial)
         {
+            float s = gameState.GetFloat("sanity");
             s = s / gameState.GetFloat("max_sanity");
             float d = Mathf.Clamp01(Mathf.Lerp(1.0f, -1.0f, s));
             asciiRenderMaterial.SetFloat("_Distortion", d);

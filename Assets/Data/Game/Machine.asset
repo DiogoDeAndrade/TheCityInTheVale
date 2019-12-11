@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f64570e879a11444280b21064e2ed386, type: 3}
+  m_Name: Machine
+  m_EditorClassIdentifier: 
+  itemName: machine
+  synonyms:
+  - machine
+  - computer
+  onScreenDescription: Strange Machine
+  textDescription: "This looks like some sort of strange machine.\nIt has buttons
+    several buttons, labelled in the same language \nas some of the eldritch passages
+    on the Necronomicon.\nThey read \"soth\", \"gn'thor\", \"fm'lathgor\", \"shugg\",
+    \"uahoth\", \"\"ore'e\",\n\"loing\", \"l\" and \"nal\"."
+  listContentsOnDescription: 0
+  isContainer: 0
+  contents: []
+  canRead: 0
+  readPages: []

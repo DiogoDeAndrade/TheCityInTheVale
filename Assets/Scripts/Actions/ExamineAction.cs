@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class ExamineAction : GameAction
 {
+    public enum Type { Look, Read };
+
+    public Type type = Type.Look;
+
     public override string GetVerb()
     {
         return "examine";
@@ -24,6 +28,13 @@ public class ExamineAction : GameAction
         if (interactiveObject.gameItem.IsThisTheItem(commandString[1]))
         {
             gameState.SetBool("Examined(" + interactiveObject.gameItem.itemName + ")", true);
+
+            if (type == Type.Read)
+            {
+                player.Read(new List<string>() { interactiveObject.gameItem.textDescription });
+
+                return true;
+            }
 
             player.logWindow.AddText(interactiveObject.gameItem.textDescription);
             if ((interactiveObject.gameItem.isContainer) && (interactiveObject.gameItem.listContentsOnDescription))

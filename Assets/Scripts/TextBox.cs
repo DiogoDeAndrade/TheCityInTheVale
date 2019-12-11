@@ -42,7 +42,7 @@ public class TextBox : MonoBehaviour
 
         if (maxLines > 0)
         {
-            text.maxVisibleLines = maxLines;
+//            text.maxVisibleLines = maxLines;
         }
     }
 

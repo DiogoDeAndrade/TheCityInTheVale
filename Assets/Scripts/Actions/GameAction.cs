@@ -13,6 +13,7 @@ public class GameAction : MonoBehaviour
         public string failText;
     }
 
+    public bool validateObject = true;
     public bool hasConditions = false;
     [ShowIf("hasConditions")]
     public List<Condition>  conditions;
@@ -35,28 +36,31 @@ public class GameAction : MonoBehaviour
         {
             return false;
         }
-        if (interactiveObject.gameItem != null)
+        if (validateObject)
         {
-            if (nounIndex >= commandString.Count)
+            if (interactiveObject.gameItem != null)
             {
-                return false;
-            }
-            if (!interactiveObject.gameItem.IsThisTheItem(commandString[nounIndex]))
-            {
-                if (!interactiveObject.gameItem.isContainer) return false;
-
-                bool found = false;
-                var contents = interactiveObject.gameItem.GetContents(player);
-                foreach (var item in contents)
+                if (nounIndex >= commandString.Count)
                 {
-                    if (item.IsThisTheItem(commandString[nounIndex]))
-                    {
-                        found = true;
-                        break;
-                    }
+                    return false;
                 }
+                if (!interactiveObject.gameItem.IsThisTheItem(commandString[nounIndex]))
+                {
+                    if (!interactiveObject.gameItem.isContainer) return false;
 
-                if(!found) return false;
+                    bool found = false;
+                    var contents = interactiveObject.gameItem.GetContents(player);
+                    foreach (var item in contents)
+                    {
+                        if (item.IsThisTheItem(commandString[nounIndex]))
+                        {
+                            found = true;
+                            break;
+                        }
+                    }
+
+                    if (!found) return false;
+                }
             }
             foreach (var condition in conditions)
             {
