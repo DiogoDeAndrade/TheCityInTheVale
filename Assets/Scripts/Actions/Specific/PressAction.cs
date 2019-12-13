@@ -5,7 +5,6 @@ using UnityEngine;
 public class PressAction : GameAction
 {
     public ParticleSystem draftPS;
-    public Collider       draftCollider;
 
     readonly List<string> buttons = new List<string>()
     {
@@ -126,7 +125,12 @@ public class PressAction : GameAction
     {
         var emission = draftPS.emission;
         emission.enabled = false;
-        draftCollider.enabled = false;
+
+        Collider[] draftColliders = draftPS.GetComponents<Collider>();
+        foreach (var draftCollider in draftColliders)
+        {
+            draftCollider.enabled = false;
+        }
     }
 
 }

@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f64570e879a11444280b21064e2ed386, type: 3}
+  m_Name: Binary
+  m_EditorClassIdentifier: 
+  itemName: BinaryMural
+  synonyms:
+  - mural
+  onScreenDescription: Mural
+  textDescription: "This is probably the strangest of all the murals you've encountered
+    so far... It depicts \nnothing gruesome, or hides some unspoken horror. It's just
+    a long sequence of symbols, \nmore precisely the symbols for \"<color=#FFFF00>l</color>\"
+    and \"<color=#FFFF00>nal</color>\", in some sort of almost random sequence...\nYes,
+    no, yes, no, no, yes... \nStrange..."
+  listContentsOnDescription: 0
+  isContainer: 0
+  contents: []
+  canRead: 0
+  readPages: []

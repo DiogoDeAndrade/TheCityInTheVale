@@ -1,12 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using NaughtyAttributes;
 
 public class GameEvent : MonoBehaviour
 {
     public enum Type { OnEnter, OnStay, OnExit };
 
-    public Type type;
+    public Type     type;
+    public bool     oneShot = false;
+    public float    cooldown = 0.0f;
+    [ShowIf("oneShot")]
+    public string   eventName;
+
+    float lastTime = -float.MaxValue;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -14,7 +21,7 @@ public class GameEvent : MonoBehaviour
 
         var player = GetPlayer(other);
 
-        if (player != null) RunEvent(player);
+        TriggerEvent(player);
     }
 
     private void OnTriggerStay(Collider other)
@@ -23,7 +30,7 @@ public class GameEvent : MonoBehaviour
 
         var player = GetPlayer(other);
 
-        if (player != null) RunEvent(player);
+        TriggerEvent(player);
     }
 
     private void OnTriggerExit(Collider other)
@@ -32,7 +39,37 @@ public class GameEvent : MonoBehaviour
 
         var player = GetPlayer(other);
 
-        if (player != null) RunEvent(player);
+        TriggerEvent(player);
+    }
+
+    void TriggerEvent(PlayerController player)
+    {
+        if (player == null) return;
+
+        if ((eventName != "") && (oneShot))
+        {
+            if (player.gameState.GetBool(eventName))
+            {
+                enabled = false;
+                return;
+            }
+        }
+
+        if (cooldown > 0.0f)
+        {
+            if ((Time.time - lastTime) < cooldown) return;
+
+            lastTime = Time.time;
+        }
+
+        if (eventName != "")
+        {
+            player.gameState.SetBool(eventName, true);
+        }
+
+        RunEvent(player);
+
+        if (oneShot) enabled = false;
     }
 
     PlayerController GetPlayer(Collider other)
