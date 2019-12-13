@@ -19,6 +19,9 @@ MonoBehaviour:
   onScreenDescription: Book
   textDescription: A book with an elaborate leather cover. It looks like some sort
     of diary.
+  listContentsOnDescription: 0
+  isContainer: 0
+  contents: []
   canRead: 1
   readPages:
   - "8 June 1951\r\n\r\nI've found the most curious book in the Miskatonic University

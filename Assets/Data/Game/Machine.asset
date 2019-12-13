@@ -20,7 +20,7 @@ MonoBehaviour:
   textDescription: "This looks like some sort of strange machine.\nIt has buttons
     several buttons, labelled in the same language \nas some of the eldritch passages
     on the Necronomicon.\nThey read \"soth\", \"gn'thor\", \"fm'lathgor\", \"shugg\",
-    \"uahoth\", \"\"ore'e\",\n\"loing\", \"l\" and \"nal\"."
+    \"uahoth\", \n\"ore'e\", \"loing\", \"l\" and \"nal\"."
   listContentsOnDescription: 0
   isContainer: 0
   contents: []

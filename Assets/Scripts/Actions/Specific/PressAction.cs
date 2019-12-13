@@ -25,9 +25,11 @@ public class PressAction : GameAction
 
     public override bool RunAction(PlayerController player, List<string> commandString)
     {
-        if (!draftCollider.enabled)
+        var emission = draftPS.emission;
+
+        if (!emission.enabled)
         {
-            player.logWindow.AddText("Pressing the buttons seems to do nothing...");
+            player.logWindow.AddText("Pressing  the buttons seems to do nothing...");
             return true;
         }
 

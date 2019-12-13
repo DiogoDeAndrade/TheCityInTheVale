@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f64570e879a11444280b21064e2ed386, type: 3}
+  m_Name: City
+  m_EditorClassIdentifier: 
+  itemName: City
+  synonyms: []
+  onScreenDescription: City
+  textDescription: 'You''ve found it... The city in the vale...
+
+    Towering spires of gargantuan size rise above the watery depths below.
+
+    You feel humbled in the face of the majesty of the looming towers, and yet you
+    feel a prickly sensation
+
+    on the back of your head, like an antediluvian dread of cosmic horror.
+
+
+    You hear scratching sounds from behind you...'
+  listContentsOnDescription: 0
+  isContainer: 0
+  contents: []
+  canRead: 0
+  readPages: []
