@@ -18,7 +18,7 @@ public class InventoryExamineAction : GameAction
         return true;
     }
 
-    public override bool RunAction(PlayerController player, List<string> commandString)
+    protected override bool RunAction(PlayerController player, List<string> commandString)
     {
         if (commandString[1] == "inventory")
         {

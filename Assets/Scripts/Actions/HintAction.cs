@@ -46,7 +46,7 @@ public class HintAction : GameAction
         return base.IsValidAction(player, commandString, nounIndex);
     }
 
-    public override bool RunAction(PlayerController player, List<string> commandString)
+    protected override bool RunAction(PlayerController player, List<string> commandString)
     {
         if (var != "")
         {

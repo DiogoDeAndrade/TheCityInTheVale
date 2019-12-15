@@ -15,7 +15,7 @@ public class RestartAction : GameAction
         return true;
     }
 
-    public override bool RunAction(PlayerController player, List<string> commandString)
+    protected override bool RunAction(PlayerController player, List<string> commandString)
     {
         PlayerController.loadFile = "";
 

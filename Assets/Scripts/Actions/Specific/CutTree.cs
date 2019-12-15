@@ -7,7 +7,7 @@ public class CutTree : UseAction
     public GameItem             fallenTree;
     public InteractiveObject    treeObject;
 
-    public override bool RunAction(PlayerController player, List<string> commandString)
+    protected override bool RunAction(PlayerController player, List<string> commandString)
     {
         player.logWindow.AddText("You use the axe to chop down the tree...");
 

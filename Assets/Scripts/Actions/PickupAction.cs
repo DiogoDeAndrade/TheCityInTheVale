@@ -6,7 +6,7 @@ public class PickupAction : GameAction
 {
     public bool     destroyOnPickup = true;
     [TextArea]
-    public string   pickupResponse;
+    public string       pickupResponse;
 
     public override string GetVerb()
     {
@@ -19,8 +19,8 @@ public class PickupAction : GameAction
 
         return true;
     }
-    
-    public override bool RunAction(PlayerController player, List<string> commandString)
+
+    protected override bool RunAction(PlayerController player, List<string> commandString)
     {
         GameState gameState = player.gameState;
 

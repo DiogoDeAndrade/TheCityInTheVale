@@ -5,6 +5,7 @@ using UnityEngine;
 public class PressAction : GameAction
 {
     public ParticleSystem draftPS;
+    public AudioSource    sound;
 
     readonly List<string> buttons = new List<string>()
     {
@@ -23,7 +24,7 @@ public class PressAction : GameAction
         return "press";
     }
 
-    public override bool RunAction(PlayerController player, List<string> commandString)
+    protected override bool RunAction(PlayerController player, List<string> commandString)
     {
         var emission = draftPS.emission;
 
@@ -133,6 +134,8 @@ public class PressAction : GameAction
         {
             draftCollider.enabled = false;
         }
+
+        sound.enabled = false;
     }
 
 }

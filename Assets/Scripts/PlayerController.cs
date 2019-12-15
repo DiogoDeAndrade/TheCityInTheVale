@@ -25,6 +25,7 @@ public class PlayerController : MonoBehaviour
     public GameState        gameState;
     public GameObject       torch;
     public GameItem         litTorchItem;
+    public AudioClip        pageTurnSound;
 
     static public string loadFile = "";
 
@@ -227,7 +228,7 @@ public class PlayerController : MonoBehaviour
         {
             if ((Time.time - timeOfLastInput) > 0.5f)
             {
-                if (Input.GetKeyDown(KeyCode.Return))
+                if ((Input.GetKeyDown(KeyCode.Return)) || (Input.GetKeyDown(KeyCode.Space)))
                 {
                     if (currentPages.Count > 1)
                     {
@@ -423,7 +424,7 @@ public class PlayerController : MonoBehaviour
                 {
                     if (action.IsValidAction(this, commandString, 1))
                     {
-                        processed = action.RunAction(this, commandString);
+                        processed = action.Execute(this, commandString);
                         if (processed) break;
                     }
                 }
@@ -656,6 +657,10 @@ public class PlayerController : MonoBehaviour
 
     void UpdateModalText()
     {
-        modalText.SetText(currentPages[nPage]);
+        if (pageTurnSound)
+        {
+            SoundManager.PlaySound(SoundManager.SoundType.SoundFX, pageTurnSound, 1.0f, 1.0f);
+        }
+        modalText.SetText(currentPages[nPage]);        
     }
 }

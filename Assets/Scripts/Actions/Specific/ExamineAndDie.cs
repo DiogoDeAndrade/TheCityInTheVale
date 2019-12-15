@@ -6,7 +6,7 @@ public class ExamineAndDie : ExamineAction
 {
     Coroutine dieInABitCR;
 
-    public override bool RunAction(PlayerController player, List<string> commandString)
+    protected override bool RunAction(PlayerController player, List<string> commandString)
     {
         if (base.RunAction(player, commandString))
         {

@@ -15,7 +15,7 @@ public class QuitAction : GameAction
         return true;
     }
 
-    public override bool RunAction(PlayerController player, List<string> commandString)
+    protected override bool RunAction(PlayerController player, List<string> commandString)
     {
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;

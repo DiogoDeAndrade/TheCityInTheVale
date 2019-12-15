@@ -33,7 +33,7 @@ public class CombineAction : GameAction
         return false;
     }
 
-    public override bool RunAction(PlayerController player, List<string> commandString)
+    protected override bool RunAction(PlayerController player, List<string> commandString)
     {
         if (!player.gameState.HasItem(item1)) return false;
         if (!player.gameState.HasItem(item2)) return false;

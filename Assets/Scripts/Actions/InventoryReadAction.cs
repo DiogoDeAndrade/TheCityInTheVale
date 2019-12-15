@@ -21,7 +21,7 @@ public class InventoryReadAction : InventoryAction
         return false;
     }
 
-    public override bool RunAction(PlayerController player, List<string> commandString)
+    protected override bool RunAction(PlayerController player, List<string> commandString)
     {
         var item = GetItem(player, commandString, 1);
 

@@ -17,6 +17,7 @@ public class GameAction : MonoBehaviour
     public bool hasConditions = false;
     [ShowIf("hasConditions")]
     public List<Condition>  conditions;
+    public AudioClip        actionSound;
 
     protected InteractiveObject interactiveObject;
 
@@ -78,7 +79,22 @@ public class GameAction : MonoBehaviour
         return true;
     }
 
-    public virtual bool RunAction(PlayerController player, List<string> commandString)
+    public bool Execute(PlayerController player, List<string> commandString)
+    {
+        if (RunAction(player, commandString))
+        {
+            if (actionSound)
+            {
+                SoundManager.PlaySound(SoundManager.SoundType.SoundFX, actionSound, 1.0f, 1.0f);
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+    protected virtual bool RunAction(PlayerController player, List<string> commandString)
     {
         return false;
     }

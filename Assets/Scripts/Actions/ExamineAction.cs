@@ -20,7 +20,7 @@ public class ExamineAction : GameAction
         return true;
     }
 
-    public override bool RunAction(PlayerController player, List<string> commandString)
+    protected override bool RunAction(PlayerController player, List<string> commandString)
     {
         GameState gameState = player.gameState;
 

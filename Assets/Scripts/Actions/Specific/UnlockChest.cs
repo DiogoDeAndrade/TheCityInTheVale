@@ -13,7 +13,7 @@ public class UnlockChest : GameAction
         return "unlock";
     }
 
-    public override bool RunAction(PlayerController player, List<string> commandString)
+    protected override bool RunAction(PlayerController player, List<string> commandString)
     {
         // Check combination
         if (commandString.Count < 3)

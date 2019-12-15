@@ -14,7 +14,7 @@ public class ListInventoryAction : GameAction
         return true;
     }
 
-    public override bool RunAction(PlayerController player, List<string> commandString)
+    protected override bool RunAction(PlayerController player, List<string> commandString)
     {
         player.DisplayInventory();
 
