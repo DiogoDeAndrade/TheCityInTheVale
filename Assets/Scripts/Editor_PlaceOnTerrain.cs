@@ -11,7 +11,7 @@ public class Editor_PlaceOnTerrain : MonoBehaviour
     void Start()
     {
 #if !UNITY_EDITOR
-        Destroy(this)
+        Destroy(this);
 #endif
     }
 

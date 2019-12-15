@@ -15,6 +15,21 @@ Comming soon...
 ## Credits
 
 * Code, art, game design done by Diogo de Andrade
+* Models
+**Trees: Pixel Processor (Stylized Tree Pack - Asset Store)
+**Rocks: Broken Vector (Lowpoly RTock/Treepack - Asset Store)
+*Sfx
+**Whispers: Taure (https://freesound.org/people/taure/)
+**Campfire: CaganCelik (https://freesound.org/people/CaganCelik/)
+**Book: Tats14 (https://freesound.org/people/Tats14/)
+**Chest: Mafon2 (https://freesound.org/people/Mafon2/)
+**Tree: ecfike (https://freesound.org/people/ecfike/)
+**Lava: Fission9 (https://freesound.org/people/Fission9/)
+**Wind: lextrack(https://freesound.org/people/lextrack/)
+**Axe: jorickhoofd (https://freesound.org/people/jorickhoofd/)
+**Lighter: SomeoneCool15 (https://freesound.org/people/SomeoneCool15/)
+**Cloth: Daniel Poggioli (https://freesound.org/people/Dpoggioli/)
+**Creature: MinigunFiend (https://freesound.org/people/MinigunFiend/)
 
 ## Licenses
 

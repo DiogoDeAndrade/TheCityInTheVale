@@ -22,6 +22,7 @@ public class PlayerController : MonoBehaviour
     public LayerMask        environmentMask;
     public float            sanityLossSpeed = 4.0f;
     public MeshRenderer     asciiRenderMesh;
+    public Shader[]         asciiShader;
     public GameState        gameState;
     public GameObject       torch;
     public GameItem         litTorchItem;
@@ -34,6 +35,7 @@ public class PlayerController : MonoBehaviour
     int             nPage;
     List<string>    currentPages;
     bool            inStateChange = false;
+    float           sanityTime = 0.0f;
 
     public State    state
     {
@@ -115,7 +117,7 @@ public class PlayerController : MonoBehaviour
             StartCoroutine(LoadCR());
         }
 
-        gameState.SetBool("asciimode", true);
+        gameState.SetInt("asciimode", 2);
         gameState.SetFloat("max_sanity", 100.0f);
         gameState.SetFloat("sanity", gameState.GetFloat("max_sanity"));
         gameState.SetBool("sanity_enabled", true);
@@ -152,8 +154,8 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        bool b = gameState.GetBool("asciimode");
-        SetASCIIMode(b);
+        int t = gameState.GetInt("asciimode");
+        SetASCIIMode(t);
     }
 
     void Start()
@@ -211,6 +213,8 @@ public class PlayerController : MonoBehaviour
                     state = State.Command;
                 }
             }
+
+            UpdateSanityVFX();
         }
         else if (_state == State.Dying)
         {
@@ -264,8 +268,8 @@ public class PlayerController : MonoBehaviour
 
         if (gameState.Exists("asciimode"))
         {
-            bool b = gameState.GetBool("asciimode");
-            SetASCIIMode(b);
+            int t = gameState.GetInt("asciimode");
+            SetASCIIMode(t);
         }
 
         UpdateSanity();
@@ -338,7 +342,7 @@ public class PlayerController : MonoBehaviour
     }
 
     void UpdateSanityVFX()
-    { 
+    {
         if (asciiRenderMaterial == null)
         {
             if (asciiRenderMesh != null)
@@ -352,10 +356,15 @@ public class PlayerController : MonoBehaviour
         {
             float s = gameState.GetFloat("sanity");
             s = s / gameState.GetFloat("max_sanity");
-            float d = Mathf.Clamp01(Mathf.Lerp(1.0f, -1.0f, s));
+            float d = Mathf.Clamp01(Mathf.Lerp(1.0f, 0.0f, s));
+            d = d * d;
+            float tInc = Mathf.Lerp(0.0f, 0.025f, d);
             asciiRenderMaterial.SetFloat("_Distortion", d);
-            asciiRenderMaterial.SetFloat("_Speed", Mathf.Lerp(0.0f, 0.025f, d));
+            asciiRenderMaterial.SetFloat("_Speed", 1.0f);
             asciiRenderMaterial.SetColor("_Tint", Color.Lerp(Color.white, Color.red, d));
+            asciiRenderMaterial.SetFloat("_SanityTimer", sanityTime);
+
+            sanityTime += Time.deltaTime * tInc;
         }
     }
 
@@ -364,17 +373,9 @@ public class PlayerController : MonoBehaviour
         torch.SetActive(gameState.HasItem(litTorchItem));
     }
 
-    void SetASCIIMode(bool b)
+    void SetASCIIMode(int mode)
     {
-        if (b)
-        {
-            if (!asciiCamera.isActiveAndEnabled)
-            {
-                asciiCamera.gameObject.SetActive(true);
-                gameCamera.targetTexture = targetTexture;
-            }
-        }
-        else
+        if (mode == 0)
         {
             if (asciiCamera.isActiveAndEnabled)
             {
@@ -382,7 +383,27 @@ public class PlayerController : MonoBehaviour
                 gameCamera.targetTexture = null;
             }
         }
-        gameState.SetBool("asciimode", b);
+        else if (mode == 1)
+        {
+            if (!asciiCamera.isActiveAndEnabled)
+            {
+                asciiCamera.gameObject.SetActive(true);
+                gameCamera.targetTexture = targetTexture;
+            }
+
+            if (asciiRenderMaterial != null) asciiRenderMaterial.shader = asciiShader[0];
+        }
+        else if (mode == 2)
+        {
+            if (!asciiCamera.isActiveAndEnabled)
+            {
+                asciiCamera.gameObject.SetActive(true);
+                gameCamera.targetTexture = targetTexture;
+            }
+
+            if (asciiRenderMaterial != null) asciiRenderMaterial.shader = asciiShader[1];
+        }
+        gameState.SetInt("asciimode", mode);
     }
 
     public void OnCommand()

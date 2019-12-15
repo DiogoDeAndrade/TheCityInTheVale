@@ -21,3 +21,4 @@ MonoBehaviour:
   contents: []
   canRead: 0
   readPages: []
+  sound: {fileID: 8300000, guid: 3352bbaca8827574c9d3dc594b19a4c7, type: 3}

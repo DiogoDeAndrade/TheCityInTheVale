@@ -41,6 +41,11 @@ public class ContainerPickupAction : GameAction
                 gameState.SetBool("PickedUp(" + item.itemName + ")", true);
                 player.logWindow.AddText("You pickup " + commandString[1]);
 
+                if (item.sound)
+                {
+                    SoundManager.PlaySound(SoundManager.SoundType.SoundFX, item.sound, 1, 1);
+                }
+
                 return true;
             }
         }

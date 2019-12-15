@@ -17,7 +17,8 @@ public class GameItem : ScriptableObject
     public List<GameItem>   contents;
     public bool             canRead;
     [ShowIf("canRead"), TextArea]
-    public List<string> readPages;
+    public List<string>     readPages;
+    public AudioClip        sound;
 
     public bool IsThisTheItem(string name)
     {

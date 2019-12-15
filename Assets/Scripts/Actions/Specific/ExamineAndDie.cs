@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class ExamineAndDie : ExamineAction
 {
+    public AudioClip scratchingSound;
+
     Coroutine dieInABitCR;
 
     protected override bool RunAction(PlayerController player, List<string> commandString)
@@ -19,13 +21,25 @@ public class ExamineAndDie : ExamineAction
 
     IEnumerator DieInABit(PlayerController player)
     {
+        SoundManager.PlaySound(SoundManager.SoundType.SoundFX, scratchingSound, 0.5f, 1.0f);
+
+        while (player.state == PlayerController.State.ModalText) yield return null;
+
         yield return new WaitForSeconds(10.0f);
+
+        SoundManager.PlaySound(SoundManager.SoundType.SoundFX, scratchingSound, 0.75f, 0.9f);
 
         player.Read(new List<string>() { "The scratching sound grows louder..." });
 
+        while (player.state == PlayerController.State.ModalText) yield return null;
+
         yield return new WaitForSeconds(5.0f);
 
+        SoundManager.PlaySound(SoundManager.SoundType.SoundFX, scratchingSound, 1.0f, 0.8f);
+
         player.Read(new List<string>() { "You look around desperately, trying to locate the source of\nthe noise...\nYou sense impending doom coming for you..." });
+
+        while (player.state == PlayerController.State.ModalText) yield return null;
 
         yield return new WaitForSeconds(5.0f);
 
