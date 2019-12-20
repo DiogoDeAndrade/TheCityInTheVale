@@ -4,6 +4,7 @@ This is a game done for the 3st Game Design Club challenge (Text Only) at the Un
 
 The player explores a world using normal 3rd person view, with a rendering effect to seem to be made from text, and has to interact with the environment and objects with a text interface.
 
+![Image](https://raw.githubusercontent.com/DiogoDeAndrade/TheCityInTheVale/master/screenshots/screen01.png)
 
 ## Tech stuff
 
